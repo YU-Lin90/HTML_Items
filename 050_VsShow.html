@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>050_VsShow</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <style>
+        .movingFrame{
+            background-color: #ccf;
+            height: 70% ;
+        }
+        .bgc1{
+            background-color: #ccc;
+        }
+        .bgc2{
+            background-color: #aaa;
+        }
+        .clips{
+            z-index: 2;
+            top: 0;
+            left: 0;
+        }
+        .clips:hover{
+            z-index: 3;
+            transform: scale(1.2);
+        }
+        .clip1{
+            clip-path: polygon(15% 0 ,30% 0,40% 100%,25% 100%);
+        }
+        .clip1:hover{
+            clip-path: polygon(20% 0 ,35% 0,45% 100%,30% 100%);
+        }
+        .clip2{
+            clip-path: polygon(30% 0 ,45% 0,55% 100%,40% 100%);
+        }
+        .clip3{
+            clip-path: polygon(45% 0 ,60% 0,70% 100%,55% 100%);
+        }
+        .clip4{
+            clip-path: polygon(60% 0 ,75% 0,85% 100%,70% 100%);
+        }
+        .clip4:hover{
+            clip-path: polygon(55% 0 ,70% 0,80% 100%,65% 100%);
+        }
+        .clips img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <section class=" outFrame h100vh po-r disf ai-c jc-c bgc1 w200p">
+
+        <div class="w50p movingFrame po-r">
+            <div class="clips clip1 po-a w100p h100p">
+                <img src="./images/vs01.jpg" alt="">
+            </div>
+            <div class="clips clip2 po-a w100p h100p">
+                <img src="./images/vs02.jpg" alt="">
+            </div>
+            <div class="clips clip3 po-a w100p h100p">
+                <img src="./images/vs03.jpg" alt="">
+            </div>
+            <div class="clips clip4 po-a w100p h100p">
+                <img src="./images/vs04.jpg" alt="">
+            </div>
+        </div>
+        <div class="w50p movingFrame po-r"></div>
+    </section>
+    <div class="h100vh bgc2">
+        <div class="bgc1 w50p h50p bdtest"></div>
+    </div>
+</body>
+</html>
