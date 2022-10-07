@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>027_BlockMoveAdvance</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #eee;
+        }
+
+        #moveTarget {
+            /* background-color: #cfc; */
+            background: linear-gradient(to top, #fcc, #cfc 50%, #ccf 100%);
+            left: 0;
+            top: 0;
+            position: absolute;
+            /* width: 50px; */
+            aspect-ratio: 1;
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+            transform: rotateZ(0deg);
+            /* transition: 50ms; */
+            z-index: 4;
+        }
+
+        .btns {
+            font-size: 50px;
+            cursor: pointer;
+            color: #cc0;
+            transition: 0.3s;
+        }
+
+        .gamePlate {
+            position: relative;
+            border: transparent 5px solid;
+            background: #999 content-box;
+            height: 510px;
+            width: 510px;
+            transition: 0.3s;
+        }
+
+        .newDot {
+            background-color: #fcc;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 3;
+            top: 0;
+            left: 0;
+        }
+
+        .lineBodys {
+            background: linear-gradient(to top, #fcc, #cfc 50%, #ccf 100%);
+            position: absolute;
+            border-radius: 50%;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            /* transition: 50ms; */
+        }
+
+        .scorePlate {
+            color: #cc0;
+            font-size: 80px;
+        }
+
+        /* .scorePlate::before{
+            content: "總分:";
+        } */
+
+        /* #808000 */
+    </style>
+</head>
+
+<body class="padV20">
+
+    <h2 class="scorePlate marb20 ta-c ">總分:0</h2>
+    <!-- <div class="ta-c marV20">
+        <label for="dotSize">點大小</label><input value="10" id="dotSize" type="number">
+        <label for="setDelay">延遲長短 單位10ms</label><input value="80" id="setDelay" type="number">
+    </div> -->
+    <div class="gamePlate disf ta-c marb10 upWrap  marHauto">
+        <div>
+            <div id="moveTarget"></div>
+        </div>
+    </div>
+    <div class="ta-c">
+        <div class="disf jc-c">
+            <div class="btnUp btns">
+                <i class="fa-solid fa-circle-arrow-up"></i>
+            </div>
+        </div>
+        <div class="disf jc-c marV20">
+            <div class="btnLeft btns">
+                <i class="fa-solid fa-circle-arrow-left"></i>
+            </div>
+
+            <div class="btns marH20  ">
+                <i class="btnStart fa-solid fa-circle-play"></i>
+                <i class="btnPause fa-solid fa-circle-pause" style="display:none;"></i>
+            </div>
+
+            <div class="btnRight btns">
+                <i class="fa-solid fa-circle-arrow-right"></i>
+            </div>
+        </div>
+        <div class="disf jc-c">
+            <div class="btnDown btns">
+                <i class="fa-solid fa-circle-arrow-down"></i>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="./script/jquery-3.6.1.min.js"></script>
+    <script>
+
+        //遊戲設定
+        //※※※※※※※※※※※※※※※※
+        //大小設置
+        let blockSize = 20;
+        $("#moveTarget").css("width", blockSize + "px");
+
+        //延遲間隔
+        let spaceTime = 100;
+        //※※※※※※※※※※※※※※※※
+
+
+        // $("#dotSize").change(() => {
+        //     setWidth = $("#dotSize").val() + "px";
+        //     $("#moveTarget").css("width", setWidth);
+        // })
+        // $("#setDelay").change(() => {
+        //     spaceTime = $("#setDelay").val();
+        // })
+
+
+        //外框
+        const GamePlate = $(".gamePlate");
+        //全寬
+        const plateWidth = $(".gamePlate").width();
+        //全高
+        const plateHeight = $(".gamePlate").height();
+        //起始橫向位置
+        let blockLeft = parseInt($("#moveTarget").css("left"));
+        //起始縱向位置
+        let blockTop = parseInt($("#moveTarget").css("top"));
+        //移動目標大小
+        // const blockSize = $("#moveTarget").width();
+
+        const edgeW = plateWidth - blockSize
+        const edgeH = plateHeight - blockSize
+
+        let gameStatus = 0;
+
+        //方向 上右下左1234
+        let gameDirection = 2;
+        let gameInterval = null;
+
+
+        //暫停時間
+        let pauseTime = 0;
+        //長度
+        let gettedLength = 1;
+
+        //新增點最後位置
+        let dotTopLast = plateHeight;
+        let dotLeftLast = plateWidth;
+        //路徑紀錄
+        let pathRecord = [];
+        //個別產生點路徑長度
+        let pathLength = [];
+        //產生點後步數計數
+        let pathCount = [];
+        //IntervalSetting 間隔存放
+        let intervalSetting = [];
+
+        //開始按鈕監聽器
+        $(".btnStart").on("click", () => {
+            setNewBlock();
+            gameStart();
+        })
+        //暫停按鈕監聽器
+        $(".btnPause").on("click", gamePause)
+        //跟隨點開始
+        function doAllFollowerInterval() {
+            if (intervalSetting.length != 0) {
+                for (let i = 0; i < intervalSetting.length; i++) {
+                    intervalSetting[i] = setInterval(() => {
+                        followerMove(i);
+                    }, spaceTime)
+                }
+            }
+            // console.log("follower");
+        }
+        //跟隨點結束
+        function clearAllFollowerInterval() {
+            for (let i = 0; i < intervalSetting.length; i++) {
+                clearInterval(intervalSetting[i]);
+            }
+        }
+
+        function gameStart() {
+            gameStatus = 1;
+            $(".btnStart").off("click", gameStart)
+            intervalMove();
+            doAllFollowerInterval()
+            $(window).on("keydown", keyboardControl);
+            $(window).on("keyup", keyboardControlUp);
+            $(".btnStart").css("display", "none");
+            $(".btnPause").css("display", "block");
+            $("#dotSize").attr("disable",true)
+            $("#setDelay").attr("disable",true)
+        }
+        function gamePause(e) {
+            gameStatus = 0;
+            $(".btnPause").off("click", gamePause)
+            clearAllFollowerInterval();
+            // clearGameInterval();
+            clearInterval(gameInterval);
+            $(window).off("keydown", keyboardControl);
+            $(window).off("keyup", keyboardControlUp);
+            $(".btnStart").css("display", "block");
+            $(".btnPause").css("display", "none");
+            $(".btnStart").on("click", gameStart);
+            $("#dotSize").attr("disable",false)
+            $("#setDelay").attr("disable",false)
+            // pauseTime = Math.floor(e.timeStamp) + "ms";
+            // console.log("暫停時間:", pauseTime);
+            // console.log(pathLength);
+            // console.log(intervalSetting);
+            // console.log(gameInterval);
+        }
+        ///KEYUP綁定
+        function keyboardControlUp() {
+            $(window).on("keydown", keyboardControl);
+        }
+        //設置interval
+        function intervalMove() {
+            gameInterval = setInterval(moveArrow, spaceTime);
+        }
+        //清除interval
+        function clearGameInterval() {
+            clearInterval(gameInterval);
+        }
+
+
+        //按鍵控制
+        function keyboardControl(event) {
+            let key = event.keyCode
+            //※※※※※※※※※※※※
+            // 上
+            if (key === 38 || key === 87) {
+                $(window).off("keydown", keyboardControl);
+                gameDirection = 1;
+                buttonFlashing("Up");
+            }
+            //※※※※※※※※※※※※
+            // 下
+            else if (key === 40 || key === 83) {
+                $(window).off("keydown", keyboardControl);
+                gameDirection = 3;
+                buttonFlashing("Down");
+            }
+            //※※※※※※※※※※※※
+            //左
+            else if (key === 37 || key === 65) {
+                $(window).off("keydown", keyboardControl);
+                gameDirection = 4;
+                buttonFlashing("Left");
+            }
+            //※※※※※※※※※※※※
+            //右
+            else if (key === 39 || key === 68) {
+                // clearIntervalAll()
+                $(window).off("keydown", keyboardControl);
+                gameDirection = 2;
+                buttonFlashing("Right");
+            }
+        }
+
+
+        let checkIfArr1 = ["0", "blockTop", "blockLeft", "blockTop", "blockLeft"];
+        let checkIfArr2 = ["0", ">", "<", "<", ">"];
+        let checkIfArr3 = ["0", "0", "edgeW", "edgeH", "0"];
+        let addAmount1 = checkIfArr1;
+        let addAmount2 = ["0", "-=", "+=", "+=", "-="];
+        let setDirectionMame = ["0", "top", "left", "top", "left"];
+        let changeDegree = ["0", "0", "90", "180", "-90"];
+        let flashDir = ["0", "top", "right", "bottom", "left"];
+        //箭頭移動
+        function moveArrow() {
+            //方向 上右下左1234
+            if (gameStatus == 1) {
+                let indexNow = gameDirection;
+
+                if (eval(`${checkIfArr1[indexNow]} ${checkIfArr2[indexNow]} ${checkIfArr3[indexNow]}`)) {
+                    eval(`${addAmount1[indexNow]} ${addAmount2[indexNow]} blockSize`);
+                    $("#moveTarget").css(setDirectionMame[indexNow], eval(`${checkIfArr1[indexNow]}`));
+                }
+                else {
+                    borderFlash(flashDir[indexNow]);
+                }
+                pathRecord.push({ left: blockLeft, top: blockTop });
+                $("#moveTarget").css("transform", `rotateZ(${changeDegree[indexNow]}deg)`);
+                bodyCollisionCheck();
+                collisionCheck();
+            }
+        }
+
+        //觸底閃爍
+        function borderFlash(side) {
+            $(".gamePlate").css(`border-${side}`, "#222 5px solid")
+            setTimeout(() => {
+                $(".gamePlate").css(`border-${side}`, "transparent 5px solid")
+            }, 300)
+        }
+        //按鈕閃爍
+        function buttonFlashing(side) {
+            $(`.btn${side}`).css("color", "#808000")
+            setTimeout(() => {
+                $(`.btn${side}`).css("color", "#cccc00")
+            }, 300)
+        }
+        //放置新點
+        function setNewBlock() {
+            let widthStep = plateWidth / blockSize;
+            let setLeft = getIntTo0(widthStep - 1) * blockSize;
+            let heightStep = plateHeight / blockSize;
+            let setTop = getIntTo0(heightStep - 1) * blockSize;
+            let lengthNow = gettedLength;
+            //不重複產生點判斷
+            if (setTop === dotTopLast && setLeft === dotLeftLast) {
+                setNewBlock();
+                return;
+            }
+            let moveLeft = parseInt($("#moveTarget").css("left"));
+            let moveTop = parseInt($("#moveTarget").css("top"));
+            if (setTop == moveTop && setLeft == moveLeft) {
+                setNewBlock();
+                // console.log("※※※※※※※※※※※※跟箭頭重複※※※※※※※※※※※※");
+                return;
+            }
+            //pathRecord   gettedLength
+            let pathCompare = pathRecord.length - lengthNow - 1;
+            console.log("現在路徑長度", pathRecord.length);
+            if (gettedLength > 1) {
+                for (let i = pathCompare; i < pathRecord.length; i++) {
+                    // let bodyLeft = parseInt($(".lineBodys").eq(i).css("left"));
+                    let bodyLeft = pathRecord[i].left;
+                    // let bodyTop = parseInt($(".lineBodys").eq(i).css("top"));
+                    let bodyTop = pathRecord[i].top;
+                    console.log("第" + i + "步");
+                    console.log("bodyTop", bodyTop);
+                    console.log("setTop", setTop);
+                    console.log("bodyLeft", bodyLeft);
+                    console.log("setLeft", setLeft);
+                    if (bodyTop == setTop && bodyLeft == setLeft) {
+                        // console.log("第" + i + "步重複");
+                        // console.log("bodyTop", bodyTop);
+                        // console.log("setTop", setTop);
+                        // console.log("bodyLeft", bodyLeft);
+                        // console.log("setLeft", setLeft);
+                        // console.log("※※※※※※※※※※※※跟身體重複※※※※※※※※※※※※");
+                        setNewBlock();
+                        return;
+                        break;
+                    }
+                }
+            }
+
+            //設定最後設定點位置
+            dotLeftLast = setLeft;
+            dotTopLast = setTop;
+            //產生點
+            $(".gamePlate").append('<div class="newDot"></div>');
+            //設定屬性
+            $(".newDot").css("left", `${setLeft}px`).css("top", `${setTop}px`).css("width", blockSize).css("height", blockSize);
+        }
+
+
+
+        //新點碰撞檢查
+        function collisionCheck() {
+            let dotLeft = $(".newDot").css("left");
+            let dotTop = $(".newDot").css("top");
+
+            let moveLeft = $("#moveTarget").css("left");
+            let moveTop = $("#moveTarget").css("top");
+
+            if (dotLeft == moveLeft && dotTop == moveTop) {
+                // console.log("碰撞第" + gettedLength + "次");
+                $(".newDot").remove();
+                setNewBlock()
+                let sequence = gettedLength;
+
+                pathLength.push(pathRecord.length);
+
+                pathCount[sequence - 1] = 1;
+                setNewFollowDot(pathRecord.length, moveLeft, moveTop, sequence);
+
+                let delayTime = spaceTime * (sequence + 1);
+                setTimeout(() => {
+                    // setTimeout(() => {
+                    intervalSetting[sequence - 1] = setInterval(() => {
+                        followerMove(sequence - 1);
+                    }, spaceTime)
+                    // }, spaceTime)
+                }, delayTime);
+                $(".scorePlate").text(`總分:${gettedLength}`);
+                // console.log(spaceTime * gettedLength)
+                gettedLength++;
+            }
+        }
+
+        //身體碰撞檢查
+        function bodyCollisionCheck() {
+            let moveLeft = $("#moveTarget").css("left");
+            let moveTop = $("#moveTarget").css("top");
+            for (let i = 0; i < gettedLength; i++) {
+                let bodyLeft = $(".lineBodys").eq(i).css("left");
+                let bodyTop = $(".lineBodys").eq(i).css("top");
+                if (bodyTop == moveTop && bodyLeft == moveLeft) {
+                    // clearAllFollowerInterval();
+                    // clearInterval(gameInterval);  
+                    gamePause();
+                    console.log("end");
+                    $(".scorePlate").text("結束");
+                    return
+                }
+            }
+        }
+
+        //放置跟隨新點             現在陣列長度    現在X    現在Y     第幾個
+        function setNewFollowDot(cuttedArrayLength, leftNow, topNow, sequence) {
+            $(".gamePlate").append(`<div class="lineBodys"></div>`);//${sequence}
+            $(".lineBodys").eq(`${Number(sequence - 1)}`).css("left", `${leftNow}`).css("top", `${topNow}`).css("width", blockSize).css("height", blockSize);;
+        }
+
+        // pathRecord
+        // pathLength
+        //intervalSetting
+        //跟隨新點移動      ※※0開始※※
+        function followerMove(index) {
+            if (gameStatus == 1) {
+                setTimeout(() => {
+                    let pathCutted = pathLength[index];//產生時長度紀錄點
+                    let pathNow = pathCount[index];//步數紀錄
+
+                    let pathIndex = pathCutted + pathNow;
+
+                    let newLeft = pathRecord[pathIndex].left;//路徑紀錄
+                    let newTop = pathRecord[pathIndex].top;//路徑紀錄
+
+                    $(".lineBodys").eq(index).css("left", newLeft).css("top", newTop);
+                    pathCount[index]++;
+                }, 5)
+            }
+        }
+
+
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //通用函式
+        function getInt(x) {
+            return Math.floor(Math.random() * x);
+        }
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+    </script>
+
+</body>
+
+</html>

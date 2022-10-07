@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>035_bubblefloatauto</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .body {
+            position: relative;
+        }
+
+        .circle {
+            border-radius: 50%;
+            position: absolute;
+            translate: -50% -50%;
+            transition: 10s;
+        }
+
+        .drawplate {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            /* background-color: #ccc; */
+            overflow: hidden;            
+        }
+        img{
+            width: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="drawplate"></div>
+
+    <script>
+
+        function getInt(x) {
+            return Math.floor(Math.random() * x);
+        }
+
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+
+        let win = document.querySelector(".drawplate");
+
+
+        (function myLoop2(i) {
+            setTimeout(function () { 
+                let windowW = window.getComputedStyle(win, '').getPropertyValue('width');
+                let areaW = windowW.substring(0, windowW.length - 2)
+                let w = getIntRange(30, areaW)
+                let L = getIntRange(20, 50);
+                let CIRC = document.createElement("div");
+                CIRC.classList.add("circle");
+                CIRC.style.width = `${L}px`;
+                CIRC.style.height = `${L}px`;
+                CIRC.style.left = `${w}px`;
+                CIRC.style.top = `120%`;
+                CIRC.style.backgroundImage = getRBGA();
+
+                let PN = getIntTo1(4);
+
+                let pImg = document.createElement("img");
+                pImg.setAttribute("src",`./images/${PN}.png`);
+                CIRC.appendChild(pImg);
+
+                win.appendChild(CIRC);
+
+                let windowH = window.getComputedStyle(win, '').getPropertyValue('height');
+                let areaH = windowH.substring(0, windowH.length - 2)
+                setTimeout(function () {
+                    CIRC.style.transform = `translateY(-${areaH*1.5}px)`;        
+
+                    (function myLoop(i) {
+                        setTimeout(function () {
+                            let rs = getIntRange(1, 100) - 50
+                            CIRC.style.translate = `${rs}px`;
+                            if (--i) myLoop(i);   //  decrement i and call myLoop again if i > 0
+                        }, 500)
+                    })(5);
+                    setTimeout(function () {
+                        win.removeChild(win.firstChild)
+                    }, 10000)
+                }, 500)
+                
+                if (i++) myLoop2(i);   //  decrement i and call myLoop again if i > 0
+            }, 50)//調這裡影響數量
+        })(10);
+
+
+
+
+
+
+        //let CIRC = document.createElement("div");
+        //CIRC.classList.add("ball");
+
+
+
+
+    </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 150) + 150);
+        }
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.1), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},1)`
+        }
+
+        const elements = document.querySelectorAll('.autobg');
+
+    </script>
+</body>
+
+</html>

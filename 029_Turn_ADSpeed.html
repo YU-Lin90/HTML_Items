@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>turn_ad</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        /* *{
+            outline: 1px solid red;
+        } */
+        .viewer_ad{
+            margin-left: 500px;
+            margin-top: 300px;
+            orientation: 1800px; 
+            /* 寬度差異 */
+            width: 200px;
+
+            height: 200px;           
+            transform: rotateZ(-45deg);
+            overflow: hidden;
+            background-color: #ccc;
+            /* border: 1px solid red; */
+            
+        }
+        .adbox{
+            transform-style: preserve-3d;
+            animation: adrotate 16s linear infinite;
+            /* transform-origin: 0%; */
+        }
+        .adbox>div{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            backface-visibility: hidden;
+            text-align: center;
+        }
+        .adpage01{
+            transform:translateZ(500px) rotateZ(45deg);
+        }
+        .adpage02{
+            transform:rotateY(90deg) translateZ(500px) rotateZ(45deg) ;
+        }
+        .adpage03{
+            transform:rotateY(180deg) translateZ(500px) rotateZ(45deg);
+        }
+        .adpage04{
+            transform:rotateY(270deg) translateZ(500px) rotateZ(45deg);
+        }
+        @keyframes adrotate{
+            0%{
+                transform: rotateY(0);
+            }
+            15%{
+                transform: rotateY(0);
+            }
+            20%{
+                transform: rotateY(-85deg);
+            }
+            25%{
+                transform: rotateY(-90deg);
+            }
+            40%{
+                transform: rotateY(-90deg);
+            }
+            45%{
+                transform: rotateY(-175deg);
+            }
+            50%{
+                transform: rotateY(-180deg);
+            }
+            65%{
+                transform: rotateY(-180deg);
+            }
+            70%{
+                transform: rotateY(-265deg);
+            }
+            75%{
+                transform: rotateY(-270deg);
+            }
+            90%{
+                transform: rotateY(-270deg);
+            }
+            95%{
+                transform: rotateY(-355deg);
+            }
+            100%{
+                transform: rotateY(-360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer_ad">
+        <div class="adbox">
+            <div class="adpage01 imgFR">
+                <img src="./images/1.png" alt="">
+                001　フシギダネ
+            </div>
+            <div class="adpage02 imgFR">
+                <img src="./images/2.png" alt="">
+                004　ヒトカゲ
+            </div>
+            <div class="adpage03 imgFR">
+                <img src="./images/4.png" alt="">
+                007　ゼニカメ
+            </div>
+            <div class="adpage04 imgFR">
+                <img src="./images/3.png" alt="">
+                025　ピカチュウ
+            </div>
+        </div>
+    </div>
+</body>
+</html>

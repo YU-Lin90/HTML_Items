@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>026_clock</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .clock {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background-color: #ccc;
+            position: absolute;
+            top: 20%;
+            left: 10%;
+        }
+
+        .sec {
+            width: 6px;
+            height: 230px;
+            background-color: #F00;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50%;
+            transform-origin: 3px 0;
+        }
+
+        .min {
+            width: 10px;
+            height: 180px;
+            background-color: #00F;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% 0;
+            transform-origin: 5px 0;
+        }
+
+        .hr {
+            width: 14px;
+            height: 130px;
+            background-color: #0F0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% 0;
+            transform-origin: 7px 0;
+        }
+        #numclock{
+            width: 200px;
+            background-color: #c3c;
+            width: 400px;
+            height: 100px;
+            color: #0F0;
+            font-size: 50px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="clock">
+        <div class="hr"></div>
+        <div class="min"></div>
+        <div class="sec"></div>
+    </div>
+    <div id="numclock"></div>
+
+    <script>
+        let S = document.querySelector(".sec");
+        let M = document.querySelector(".min");
+        let H = document.querySelector(".hr");
+        let NC = document.querySelector("#numclock");
+        console.log(NC);
+        // console.log(SecNow);
+        // console.log(MinNow);
+        // console.log(HourNow);
+
+        (function myLoop(i) {
+            setTimeout(function () {         
+                let SecNow = new Date().getSeconds();
+                let MinNow = new Date().getMinutes();
+                let HourNow = new Date().getHours();
+
+                S.style.transform = `rotateZ(${SecNow * 6 + 180}deg)`;
+                M.style.transform = `rotateZ(${MinNow * 6 + 180+SecNow/10}deg)`;
+                H.style.transform = `rotateZ(${HourNow * 30 + 180+MinNow/2+SecNow/120}deg)`;
+
+                if(SecNow<10){
+                    SecNow = "0"+SecNow ;
+                }
+                if(MinNow<10){
+                    MinNow = "0"+MinNow ;
+                }
+                if(HourNow<10){
+                    HourNow = "0"+HourNow ;
+                }
+                if(HourNow>12){
+                    HourNow = HourNow;
+                }
+
+
+                NC.textContent = `${HourNow}:${MinNow}:${SecNow}`
+
+                
+                if (++i) myLoop(i);   //  decrement i and call myLoop again if i > 0
+            }, 1000)
+        })(1);
+
+        // console.log(SecNow / 60 + 180);
+    </script>
+</body>
+
+</html>

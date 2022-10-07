@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>008_menuClose</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .menubtn{
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+        .menubtn_bar{
+            width: 30px;
+            height: 2px;
+            position: absolute;
+            background-color: #000;
+            transform-origin: 0%;
+            transition: .8s;
+        }
+        .menubtn_bar_01{
+            top: 4px;
+        }
+        .menubtn_bar_02{
+            top: 14px;
+        }
+        .menubtn_bar_03{
+            bottom: 4px;
+        }
+        /* .menubtn:hover .menubtn_bar_01{
+            transform: rotateZ(45deg);
+        }
+        .menubtn:hover .menubtn_bar_02{
+            opacity: 0;
+        }
+        .menubtn:hover .menubtn_bar_03{
+            transform: rotateZ(-45deg);
+        } */
+    </style>
+</head>
+<body>
+    <div id="menu_Change" class="menubtn">
+        <div id="Rbtn01" class="menubtn_bar menubtn_bar_01"></div>
+        <div id="Rbtn02" class="menubtn_bar menubtn_bar_02"></div>
+        <div id="Rbtn03" class="menubtn_bar menubtn_bar_03"></div>
+    </div>
+
+
+    <script>
+        const M01 = document.getElementById("menu_Change");
+        const B01 = document.getElementById("Rbtn01");
+        const B02 = document.getElementById("Rbtn02");
+        const B03 = document.getElementById("Rbtn03");
+        M01.addEventListener("click", function() {
+            B01.style.transform= "rotateZ(45deg)";
+            B01.style.width="28px";
+            B02.style.opacity=0;
+            B03.style.transform= "rotateZ(-45deg)";
+            B03.style.width="28px";
+            
+        })
+    </script>
+</body>
+</html>

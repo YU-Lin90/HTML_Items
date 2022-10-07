@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>013_fliptime</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        ul{
+            margin: 100px auto;
+            display: flex;
+            width: 50%;
+            font-size: 30px;
+            line-height: 30px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        li{
+            border: 1px solid #F00;
+            display: flex;
+            align-items: flex-end;
+            align-items: flex-start;
+            /* position: relative;  */
+            transition: 2s;
+        }
+        li:hover a{
+            translate: 0 -50%;
+             
+        }
+        a{
+            display: block;
+            position: relative;
+            transition: 2s;
+            text-decoration: none;
+        }
+        /* @keyframes CH {
+            
+        } */
+    </style>
+</head>
+<body>
+    <ul>
+        <li>
+            <a href="">
+                123<br>321
+            </a>
+        </li>
+        <li>
+            <a href="">
+                234<br>432
+            </a>
+        </li>
+    </ul>
+</body>
+</html>

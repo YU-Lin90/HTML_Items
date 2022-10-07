@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>030_zzzbubble</title>
+    <link rel="stylesheet" href="reset.css">
+
+    <style>
+        /* * {
+            outline: 1px solid red;
+        } */
+
+        .zzz {
+            position: relative;
+            left: 200px;
+            background-color: #c3c;
+            width: 200px;
+            height: 200px;
+
+            border-radius: 50% 50% 0 50%;
+            transform: rotateZ(-45deg) scale(1);
+            transform-origin: 100% 100%;
+            animation: zz2 3s infinite;
+            /* animation: zzz 3s infinite; */
+        }
+        .shapez{
+            background-color: #fff;
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            border-radius:100% 0 100% 0;
+            
+        }
+        .shapeztop{
+            transform: rotateZ(135deg);
+            top: 50%;
+            left: 105%;
+            translate: -50%;
+        }
+        .shapezbot{
+            transform: rotateZ(45deg);
+            top: 80%;
+            left: 80%;
+            translate: -50%;
+        }
+
+
+        @keyframes zz2 {
+            0% {
+                transform: rotateZ(-45deg) scale(.5);
+            }
+
+            50% {
+                transform: rotateZ(-45deg) scale(1.5);
+            }
+
+            100% {
+                transform: rotateZ(-45deg) scale(.5);
+            }
+
+        }
+
+        @keyframes zzz {
+            0% {
+                clip-path: polygon(100% 78%, 74% 64%, 73% 37%, 65% 22%, 60% 11%, 48% 5%, 25% 7%, 11% 14%, 3% 26%, 3% 38%, 3% 59%, 5% 71%, 15% 88%, 25% 93%, 41% 96%, 59% 91%, 74% 83%);
+            }
+
+            50% {
+
+                clip-path: polygon(100% 78%, 74% 64%, 69% 52%, 59% 41%, 48% 38%, 34% 37%, 22% 41%, 14% 48%, 12% 54%, 9% 62%, 10% 71%, 13% 80%, 18% 88%, 28% 93%, 41% 93%, 58% 88%, 74% 79%);
+            }
+
+            100% {
+                clip-path: polygon(100% 78%, 74% 64%, 73% 37%, 65% 22%, 60% 11%, 48% 5%, 25% 7%, 11% 14%, 3% 26%, 3% 38%, 3% 59%, 5% 71%, 15% 88%, 25% 93%, 41% 96%, 59% 91%, 74% 83%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="zzz">
+        <!--<div class="shapez shapeztop"></div>-->
+        <!--<div class="shapez shapezbot"></div>-->
+    </div>
+</body>
+
+</html>

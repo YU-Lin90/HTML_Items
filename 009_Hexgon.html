@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>009_hexgon</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        img{
+            width: 100%;
+        }
+        .FR{
+            width: 100%;
+            aspect-ratio: 4/5;
+            background-color: #939;
+            flex-wrap: wrap;
+            flex-direction: row;
+            display: flex;
+            justify-content: center ;
+            align-items: center;
+            padding: 8%;
+        }
+        .hex{
+            width: 50%;
+            aspect-ratio: 1/1;
+            background-color: #fff;
+            display: flex;
+            flex-direction:column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, gold,silver 50%,gold);
+            clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%, 0% 25%);
+            position: relative;
+        }
+        /* .hex::before{
+            text-align: center;
+            width: 100%;
+            display: block;
+            position: absolute;
+            content: '注目情報';
+            color: #333;
+            font-size: 20px;
+            top: 70%;
+            left: 50%;
+            translate: -50%;
+            z-index: 2;
+        } */
+        .imgFR{
+            width: 50%;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+        .move_UR{
+            top:-5%;
+            right:-5%;
+        }
+        .move_DL{
+            bottom:-5%;
+            left: -5%;
+        }
+        .hex_txt{
+            position: absolute;
+            width: 100%;
+            z-index: 3;
+            text-align: center;
+            top: 70%;
+            font-size: 28px;
+            color: #000;
+            font-weight: 800;
+        }
+        @media screen and (min-width:1024px) {
+            .FR{
+                aspect-ratio: 3/1;
+            }
+            .hex{
+                width: 16.6666%;
+            }
+            .move_UR{
+                top:-15%;
+                right:-2%;
+            }
+            .move_DL{
+                bottom:-15%;
+                left: -2%;
+            }
+        }
+    </style>
+
+    
+</head>
+<body>
+
+    <div class="FR">
+        <div class="hex move_UR">
+            <div class="imgFR">
+                <img src="./images/icon01.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>
+        </div>
+        <div class="hex move_DL">
+            <div class="imgFR">
+                <img src="./images/icon02.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>
+        </div>
+        <div class="hex move_UR">
+            <div class="imgFR">
+                <img src="./images/icon03.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>            
+        </div>
+        <div class="hex move_DL">
+            <div class="imgFR">
+                <img src="./images/icon04.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>
+        </div>
+        <div class="hex move_UR">
+            <div class="imgFR">
+                <img src="./images/icon05.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>
+        </div>
+        <div class="hex move_DL">
+            <div class="imgFR">
+                <img src="./images/icon06.png" alt="">
+            </div>
+            <div class="hex_txt">
+                123
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>027_bubble</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .body{
+            position: relative;
+        }
+        .circle {
+            border-radius: 50%;
+            position: absolute;
+            translate: -50% -50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    
+
+
+    <script>
+        function getInt(x){
+        return Math.floor(Math.random()*x);
+        }
+        let CP = false;
+        document.addEventListener("mousedown",()=>{
+            CP=true;
+        })
+        let win=document.querySelector("body")
+        document.addEventListener("mousemove",(evt)=>{
+            if(CP){                
+                let L= getInt(50);
+                let CIRC = document.createElement("div");
+                CIRC.classList.add("circle","autobg");
+                CIRC.style.width=`${L}px`;
+                CIRC.style.height=`${L}px`;
+                CIRC.style.left=`${evt.clientX}px`;
+                CIRC.style.top=`${evt.clientY}px`;
+                CIRC.style.backgroundImage = getRBGA();
+                win.appendChild(CIRC);                
+        }})
+        document.addEventListener("mouseup",()=>{
+            CP=false;
+        })
+        let CIRC = document.createElement("div");
+            CIRC.classList.add("ball");
+
+
+
+
+    </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 50) + 100);
+        }
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+        }
+
+        const elements = document.querySelectorAll('.autobg');
+
+        Array.from(elements).forEach((element, index) => {
+            element.style.backgroundImage = getRBGA();
+        });
+
+           // $('.autobg').each(function (index, currentElement) {
+           //     currentElement.style.backgroundImage = getRBGA();
+           // });
+    </script>
+</body>
+
+</html>

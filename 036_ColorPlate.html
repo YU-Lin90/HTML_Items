@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>036_colorplate</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        body{
+            padding-left: 10%;
+            padding-top: 10%;
+        }
+        .colorplate{
+            width: 1px;
+            height: 1px;
+            /* border: 1px solid #F00; */
+        }
+        .ta01{
+            width: 260px;
+            height: 260px;
+        }
+        #rdcolor{
+            width: 50px;
+            height: 18px;
+        }
+        .OP{
+            text-align: center;
+            width: 260px;
+        }
+    </style>
+
+
+
+</head>
+<body>
+    <input type="text" id="colorOP" class="OP" readonly>
+    <table class="ta01">
+    </table>
+    <br>
+    <label for="">縱向</label>
+    <select name="" id="colorcol">
+        <option value="">紅</option>
+        <option value="">綠</option>
+        <option value="">藍</option>
+    </select>
+
+    <label for="">橫向</label>
+    <select name="" id="colorrow">
+        <option value="">紅</option>
+        <option value="">綠</option>
+        <option value="">藍</option>
+    </select>
+
+    
+    <label for="" >第三色</label>
+    <input type="number" id="rdcolor" max="255" min="0" maxlength="3" value="0">
+    <br>
+    <br>雙向同色則另兩色設定相同於第三色<br><br>
+    <p class="OP" id="OP"></p>
+
+    
+
+
+
+
+
+    <script>
+        //console.log();
+
+        const TA = document.querySelector(".ta01");
+        const COLCOLOR = document.querySelector("#colorcol")
+        const ROWCOLOR = document.querySelector("#colorrow")
+        const RDCOLOR = document.querySelector("#rdcolor")
+        const OP = document.querySelector("#OP")
+        const IOP = document.querySelector("#colorOP")
+        let row = 0 ,col=0,amacolor=0;
+        
+        drawColorPlate();
+
+        COLCOLOR.addEventListener("change",()=>{
+            col=  COLCOLOR.selectedIndex;
+            drawColorPlate();
+        })
+        ROWCOLOR.addEventListener("change",()=>{
+            row = ROWCOLOR.selectedIndex;
+            drawColorPlate();
+        })
+        RDCOLOR.addEventListener("input",()=>{
+            amacolor = RDCOLOR.value;
+            drawColorPlate();
+        })
+        TA.addEventListener("mouseover",(e)=>{
+            IOP.value = e.target.style.backgroundColor;        
+        })        
+        TA.addEventListener("mousedown",(e)=>{
+            OP.textContent = e.target.style.backgroundColor;        
+        })
+
+        function drawColorPlate(){
+            OP.textContent = "";
+            while (TA.hasChildNodes()) {
+                TA.removeChild(TA.lastChild);
+            }
+            for(let i=0;i<=255 ;i++){//縱向
+            
+            let tRow = document.createElement("tr");
+
+            let docFrag = document.createDocumentFragment();
+
+            for(let j=0;j<=255;j++){//橫向
+
+                let RED="0",GREEN="0",BLUE="0";
+
+                let tData = document.createElement("td");
+
+                tData.classList.add("colorplate");                
+
+                //row.col判斷式            
+                if(row==0){
+                    RED = j;
+                    GREEN =amacolor;
+                    BLUE =amacolor;
+                }
+                else if(row==1){
+                    GREEN= j; 
+                    RED = amacolor;
+                    BLUE =amacolor;
+                }
+                else if(row==2){
+                    BLUE= j; 
+                    RED = amacolor;
+                    GREEN =amacolor;
+                }
+                if(col==0){
+                    RED = i;
+                }
+                else if(col==1){
+                    GREEN = i;
+                }
+                else if(col==2){
+                    BLUE= i;
+                }            
+                if(row==col&&row==0){       
+                    RED=i+j;
+                }
+                else if(row==col&&row==1){       
+                    GREEN=i+j;
+                }
+                else if(row==col&&row==2){       
+                    BLUE=i+j;
+                }
+                let colorstyle = `rgba(${RED},${GREEN},${BLUE})`;
+                tData.style.backgroundColor = colorstyle ;
+                docFrag.appendChild(tData)
+            }
+            tRow.appendChild(docFrag);
+            TA.appendChild(tRow);
+
+
+            
+        }   
+        }
+
+    </script>
+</body> 
+</html>

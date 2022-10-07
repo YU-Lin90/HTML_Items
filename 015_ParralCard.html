@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>015_parral_card</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .box{
+            width: 600px;
+            width: 70%;
+            margin-top: 10%;
+            margin-left: 10%;
+        }
+        .pa_frame {
+            width: 90%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .card_plate {
+            width: 300%;
+            display: flex;
+            justify-content: space-between;
+
+            background-color: #ccc5;
+            align-items: center;
+            transform: translateX(-33.33333%);
+        }
+
+        .card_plate .imgFR {
+            width: 80%;
+            vertical-align: bottom;
+        }
+        .arrow{
+            width: 600px;
+            text-align: center;
+        }
+        button{
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="pa_frame">
+            <div id="CPlate" class="card_plate">
+                <div class="imgFR">
+                    <img src="./images/chara001.png" alt="">
+                </div>
+                <div class="imgFR">
+                    <img src="./images/chara003.png" alt="">
+                </div>
+                <div class="imgFR">
+                    <img src="./images/chara004.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="arrow">
+        <button id="pa_L">left</button>
+        <button id="pa_C">center</button>
+        <button id="pa_R">right</button>
+    </div>
+
+
+
+
+    <script>
+        const PAL = document.getElementById("pa_L")
+        const PAC = document.getElementById("pa_C")
+        const PAR = document.getElementById("pa_R")
+        const CPL = document.getElementById("CPlate")
+
+        PAL.addEventListener("click",function(){
+            CPL.style.transform = "translateX(0)";
+        })
+        PAC.addEventListener("click",function(){
+            CPL.style.transform = "translateX(-33.33333%)";
+        })
+        PAR.addEventListener("click",function(){
+            CPL.style.transform = "translateX(-66.66666%)";
+        })
+
+    </script>
+
+
+</body>
+
+</html>

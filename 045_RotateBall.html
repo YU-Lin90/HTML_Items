@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>045_RotateBall</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        body {
+            background-color: #ccc;
+        }
+
+        .viewerBox {
+
+            orientation: 800px;
+            width: 500px;
+            height: 500px;
+            margin: 200px auto 0;
+            /* perspective-origin:50% 50% ; */
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rotateBox {
+            transform-style: preserve-3d;
+            /* orientation: 1000px; */
+            animation: ballRotate 8s linear infinite;
+            transform-origin: 50% 50%;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rotateBox>div {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            /* backface-visibility: hidden; */
+            /* text-align: center; */
+        }
+
+        .compoment {
+            /* clip-path: polygon(20% 0, 100% 80%, 50% 100%); */
+            transform-origin: 50% 50%;
+            opacity: 0.8;
+            /* transform: translateZ(500px); */
+        }
+
+
+
+        @keyframes ballRotate {
+            from {
+                transform: rotateY(0);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="viewerBox">
+        <div class="rotateBox">
+
+        </div>
+    </div>
+
+    <script src="./script/jquery-3.6.1.min.js"></script>
+    <script>
+
+        let ballRadius = 200;
+
+        let shapeAmount = 200;
+
+        // $(".rotateBox").width(ballRadius)
+        // Math.cos()
+        for (let i = 0; i < shapeAmount; i++) {
+
+            $(".rotateBox").append("<div class='compoment autobg'></div>");
+            $(".compoment").eq(i)
+                .css("transform", ` rotateX(${getIntTo1(360)}deg) rotateY(${getIntTo1(360)}deg) rotateZ(${getIntTo1(360)}deg) translateZ(${ballRadius}px)`)
+                .css("clip-path", `polygon(${getIntTo0(100)}% 0, 100% ${getIntTo0(100)}%, ${getIntTo0(100)}% 100%)`);
+
+            // setTimeout(()=>{
+            //     $(".compoment").eq(i).css("transform",`translateZ(${ballRadius}px)`)
+            // },1000)
+
+
+        }
+
+        // for (let i = 0; i < shapeAmount; i++) {
+
+        //     $(".rotateBox").append("<div class='compoment autobg'></div>");
+        //     $(".compoment").eq(i)
+        //         .css("transform", ` rotateX(${getIntTo1(360)}deg) rotateY(${getIntTo1(360)}deg) rotateZ(${getIntTo1(360)}deg) translateZ(${ballRadius / 2}px)`)
+        //         .css("clip-path", `polygon(${getIntTo0(100)}% 0, 100% ${getIntTo0(100)}%, ${getIntTo0(100)}% 100%)`);
+
+        //     // setTimeout(()=>{
+        //     //     $(".compoment").eq(i).css("transform",`translateZ(${ballRadius}px)`)
+        //     // },1000)
+
+
+        // }
+
+
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+
+    </script>
+
+
+
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 50) + 100);
+        }
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+        }
+
+        const elements = document.querySelectorAll('.autobg');
+
+        Array.from(elements).forEach((element, index) => {
+            element.style.backgroundImage = getRBGA();
+        });
+
+    // $('.autobg').each(function (index, currentElement) {
+    //     currentElement.style.backgroundImage = getRBGA();
+    // });
+    </script>
+</body>
+
+</html>
