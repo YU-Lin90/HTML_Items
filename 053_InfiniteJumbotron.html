@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>053_InfiniteJumbotron.</title>
+    <link rel="stylesheet" href="reset.css">
+
+    <style>
+        .box {
+            width: 600px;
+            /* width: 70%; */
+            margin-top: 10%;
+            margin-left: 10%;
+        }
+
+        .pa_frame {
+            width: 90%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+
+        .card_plate {
+            width: 400%;
+            display: flex;
+            justify-content: space-between;
+            background-color: #ccc5;
+            align-items: center;
+            /* transform: translateX(-33.33333%); */
+            /* transition: 10s; */
+            /* animation: parralMove 8s linear infinite; */
+        }
+
+        .card_plate .imgFR {
+            width: 60%;
+            vertical-align: bottom;
+        }
+
+        .arrow {
+            width: 600px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+
+        }
+
+        button {
+            width: 50px;
+            height: 50px;
+        }
+
+        .btn {
+            width: 50px;
+            height: 20px;
+            border: 1px #333 solid;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 18px;
+            font-size: 18px;
+        }
+
+        /* .btn:hover{
+            background-color: #333;
+        } */
+        .disf {
+            display: flex;
+            justify-content: center;
+            /* gap:5px; */
+        }
+
+        #CPlate {
+            transition: .3s;
+        }
+
+        /* .abs */
+
+        /* @keyframes parralMove {
+            from {
+                transform: translateX(0);
+            }
+
+            22.22222% {
+                transform: translateX(0);
+            }
+
+            33.33333% {
+                transform: translateX(-25%);
+            }
+
+            55.55555% {
+                transform: translateX(-25%);
+            }
+
+            66.66666% {
+                transform: translateX(-50%);
+            }
+
+            88.88888% {
+                transform: translateX(-50%);
+            }
+
+            100% {
+                transform: translateX(-75%);
+            }
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="pa_frame">
+            <div id="CPlate" class="card_plate">
+                <div class="imgFR">
+                    <img src="./images/chara001.png" alt="">
+                </div>
+                <div class="imgFR">
+                    <img src="./images/chara003.png" alt="">
+                </div>
+                <div class="imgFR">
+                    <img src="./images/chara004.png" alt="">
+                </div>
+                <div class="imgFR">
+                    <img src="./images/chara001.png" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="disf abs">
+            <div class="btn btn01"></div>
+            <div class="btn btn02"></div>
+
+        </div>
+    </div>
+
+
+    <script src="./script/jquery-3.6.1.min.js"></script>
+    <script>
+
+        {
+            let page = 1;
+            $(".btn01").click(leftPage);
+            $(".btn02").click(rightPage);
+            function leftPage() {
+                if (page != 1) {
+                    $("#CPlate").css("transform", `translateX(${- (page - 2) * 25}%)`);
+                    page--;
+                }
+                else if (page == 1) {
+                    $("#CPlate").css("transition", `0s`);
+                    $("#CPlate").css("transform", `translateX(-75%)`);
+                    setTimeout(() => {
+                        $("#CPlate").css("transition", `.3s`);
+                        $("#CPlate").css("transform", "translateX(-50%)");
+                    }, 1)
+                    page = 3;
+                }
+                $(".btn01").off("click", leftPage);
+                $(".btn02").off("click", rightPage);
+                setTimeout(() => {
+                    $(".btn01").on("click", leftPage);
+                    $(".btn02").on("click", rightPage);
+                }, 300);
+            }
+            function rightPage() {
+                if (page != 4) {
+                    $("#CPlate").css("transform", `translateX(${- page * 25}%)`);
+                    page++;
+                }
+                else if (page == 4) {
+                    $("#CPlate").css("transition", `0s`);
+                    $("#CPlate").css("transform", `translateX(0)`);
+                    setTimeout(() => {
+                        $("#CPlate").css("transition", `.3s`);
+                        $("#CPlate").css("transform", "translateX(-25%)");
+                    }, 1)
+                    page = 2;
+                }
+                $(".btn01").off("click", leftPage);
+                $(".btn02").off("click", rightPage);
+                setTimeout(() => {
+                    $(".btn01").on("click", leftPage);
+                    $(".btn02").on("click", rightPage);
+                }, 300);
+            }
+        }
+        // $(".card_plate")
+
+    </script>
+
+</body>
+
+
+</html>
