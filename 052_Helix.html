@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <style>
+        .viewer_3D {
+            orientation: 10000px;
+            width: 500px;
+            height: 500px;
+            background-color: #ccc;
+            animation: viewerMove 2s linear;
+            transition: .5s;
+        }
+
+        .rotateBox {
+            transform-style: preserve-3d;
+            animation: adrotate 200s linear infinite;
+            /* background-color: #ccf; */
+            transform-origin: 50% 50%;
+            outline: 5px red solid;
+            height: 100%;
+            width: 100%;
+        }
+
+        .rotateBox>div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* backface-visibility: hidden; */
+            text-align: center;
+        }
+
+        /* 
+        .contentPage01 {
+            transform: translateZ(500px);
+        }
+
+        .contentPage02 {
+            transform: rotateY(90deg) translateZ(500px);
+        }
+
+        .contentPage03 {
+            transform: rotateY(180deg) translateZ(500px);
+        }
+
+        .contentPage04 {
+            transform: rotateY(270deg) translateZ(500px);
+        } */
+
+        @keyframes adrotate {
+            from {
+                transform: rotateY(0) translateY(0);
+            }
+
+            to {
+                transform: rotateY(-360deg) translateY(-300%);
+            }
+        }
+        /* @keyframes viewerScale {
+            from{
+                scale: 0.1;
+            }            
+            to{
+                scale: 1;
+            }
+        } */
+        @keyframes viewerMove {
+            from{
+                transform: translateX(40vw) translateY(80vh) scale(0.1);
+                
+            }
+            20%{
+                transform: translateX(-10vw) translateY(60vh) scale(0.2);
+            }
+            50%{
+                transform: translateX(0) translateY(30vh) scale(0.5);
+            }
+            100%{
+                transform: translateX(0) translateY(0) scale(1);                
+            }
+        }
+    </style>
+</head>
+
+<body class="padV20 h100vh">
+
+    <div class="viewer_3D marVauto marHauto">
+
+        <div class="rotateBox">
+            <!-- <div class="contentPages contentPage1 ">
+                <img src="./images/1.png" alt="">
+                1
+            </div>
+            <div class="contentPages contentPage2 ">
+                <img src="./images/2.png" alt="">
+                2
+            </div>
+            <div class="contentPages contentPage3 ">
+                <img src="./images/3.png" alt="">
+                3
+            </div>
+            <div class="contentPages contentPage4 ">
+                <img src="./images/4.png" alt="">
+                4
+            </div>
+            <div class="contentPages contentPage5 ">
+                <img src="./images/1.png" alt="">
+                5
+            </div>
+            <div class="contentPages contentPage6 ">
+                <img src="./images/2.png" alt="">
+                6
+            </div>
+            <div class="contentPages contentPage7 ">
+                <img src="./images/3.png" alt="">
+                7
+            </div>
+            <div class="contentPages contentPage8 ">
+                <img src="./images/4.png" alt="">
+                8
+            </div>
+            <div class="contentPages contentPage9 ">
+                <img src="./images/1.png" alt="">
+                9
+            </div>
+            <div class="contentPages contentPage10 ">
+                <img src="./images/2.png" alt="">
+                10
+            </div> -->
+        </div>
+
+    </div>
+
+</body>
+<script>
+
+    let rotatingDiv = qs(".rotateBox");
+
+    //總卡片數
+    let totalCards = 50;
+    for (let i = 0; i < totalCards; i++) {
+
+        let srcLink = `./images/${getIntTo1(4)}.png`;
+        let addClass = `contentPages`;
+
+
+        setCards(rotatingDiv,srcLink,addClass);
+    }
+
+
+    for (let i = 0; i < totalCards; i++) {
+        let rotateCard = qsA(".contentPages");
+        rotateCard[i].style.transform = `rotateY(${i * 36}deg) translateY(${i * 100}px) translateZ(700px)`;
+
+    }
+
+
+    //選擇器
+    function qs(queryTarget) {
+        let ele = document.querySelector(queryTarget);
+        return ele;
+    }
+    //全部選擇器
+    function qsA(queryTarget) {
+        let ele = document.querySelectorAll(queryTarget);
+        return ele;
+    }
+
+    //獲得正整數 含輸入的數到1 
+    function getIntTo1(x) {
+        return Math.floor(Math.random() * x + 1);
+    }
+
+
+    //產生圖並丟進框內 父節點   圖片連結  圖片框CLASS清單
+    function setCards(parent, imgLink, classLists) {
+        let newImg = document.createElement("img");
+        newImg.setAttribute("src", imgLink);
+
+        let newFrame = document.createElement("div");
+        newFrame.classList.add(classLists);
+
+        newFrame.appendChild(newImg);
+        parent.appendChild(newFrame);
+    }
+
+
+</script>
+
+</html>
