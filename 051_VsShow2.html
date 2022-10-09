@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>051_VsShow2</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <style>
+        /* ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※ */
+        /* 分類頁 */
+
+        /* .typesOutFrame {
+            overflow-x:hidden;
+        } */
+        .typesOutFrame::before {
+            content: "口味";
+            position: sticky;
+            top: 50%;
+            left: 3%;
+            font-size: 7vw;
+            color: var(--mainColor);
+            font-weight: 800;
+        }
+
+        .movingFrame {
+            /* background-color: #ccf; */
+            width: 200%;
+            flex-shrink: 0;
+            top: 0;
+            /* overflow-x: hidden; */
+            transition: .8s;
+            /* left: 0; */
+        }
+
+
+        .bgc1 {
+            background-color: #ccc;
+        }
+
+        .bgc2 {
+            background-color: #aaa;
+        }
+
+        .clips {
+            z-index: 2;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            transform: translateY(-100%);
+            transition: .5s;
+            opacity: 0;
+        }
+
+        .clips:hover {
+            z-index: 3;
+            /* transform: scale(1.2); */
+            scale: 1.2;
+        }
+
+        .clip1,
+        .clip5 {
+            clip-path: polygon(15% 0, 30% 0, 40% 100%, 25% 100%);
+        }
+
+        .clip1:hover,
+        .clip5:hover {
+            clip-path: polygon(20% 0, 35% 0, 45% 100%, 30% 100%);
+        }
+
+        .clip2,
+        .clip6 {
+            clip-path: polygon(30% 0, 45% 0, 55% 100%, 40% 100%);
+        }
+
+        .clip3,
+        .clip7 {
+            clip-path: polygon(45% 0, 60% 0, 70% 100%, 55% 100%);
+        }
+
+        .clip4,
+        .clip8 {
+            clip-path: polygon(60% 0, 75% 0, 85% 100%, 70% 100%);
+        }
+
+        .clip4:hover,
+        .clip8:hover {
+            clip-path: polygon(55% 0, 70% 0, 80% 100%, 65% 100%);
+        }
+
+        .clips img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .top0 {
+            top: 0;
+        }
+
+        .ol3 {
+            outline: 3px red solid;
+        }
+
+        .clips.movein {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* ※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※ */
+
+        .divideLine {
+            clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+            background: linear-gradient(to right, var(--mainComplementary), var(--mainColor) 50%, var(--mainComplementary));
+            width: 90%;
+            height: 6px;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+
+<body>
+    <section class=" typesOutFrame h200vh po-r  w100p ">
+
+        <div class="movingFrame h50p po-s disf of-h top0 ai-c">
+
+            <div class="w100p disf po-r h80p top0 ov-h">
+
+                <div class="w50p po-r">
+                    <div class="clips clip1 po-a w100p h100p">
+                        <img src="./images/vs01.jpg" alt="">
+                    </div>
+                    <div class="clips clip2 po-a w100p h100p">
+                        <img src="./images/vs02.jpg" alt="">
+                    </div>
+                    <div class="clips clip3 po-a w100p h100p">
+                        <img src="./images/vs03.jpg" alt="">
+                    </div>
+                    <div class="clips clip4 po-a w100p h100p">
+                        <img src="./images/vs04.jpg" alt="">
+                    </div>
+                </div>
+
+                <div class="w50p po-r">
+                    <div class="clips clip5 po-a w100p h100p">
+                        <img src="./images/vs04.jpg" alt="">
+                    </div>
+                    <div class="clips clip6 po-a w100p h100p">
+                        <img src="./images/vs03.jpg" alt="">
+                    </div>
+                    <div class="clips clip7 po-a w100p h100p">
+                        <img src="./images/vs02.jpg" alt="">
+                    </div>
+                    <div class="clips clip8 po-a w100p h100p">
+                        <img src="./images/vs01.jpg" alt="">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <script>
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //種類特效處理
+
+        //區域
+        let typesOutFrame = qs(".typesOutFrame");
+        //移動框
+        let movingFrame = qs(".movingFrame");
+
+        window.addEventListener("scroll", () => {
+            //區域位置
+            let secY = typesOutFrame.offsetTop;
+            //滾輪位置
+            let scroolYnow = window.scrollY;
+            //廣告圖
+            let nodes = qsA(".clips");
+            //區域高
+            let frameHeight = parseInt(getStyle(typesOutFrame, "height"));
+            //前四張圖
+            if (scroolYnow >= secY - 200 && scroolYnow < secY + frameHeight / 3) {
+                movingFrame.style.transform = "translateX(0)"
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        nodes[i].classList.add("movein");
+                    }, i * 200)
+                }
+            }
+            //向右移動 後四張圖
+            if (scroolYnow >= secY + frameHeight / 3) {
+                movingFrame.style.transform = "translateX(-50%)"
+                // console.log(1);
+                for (let i = 4; i < 8; i++) {
+                    setTimeout(() => {
+                        nodes[i].classList.add("movein");
+                    }, i * 200)
+                }
+            }
+        })
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //通用函式
+        function getInt(x) {
+            return Math.floor(Math.random() * x);
+        }
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.1), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5)`;
+        }
+        function getColor() {
+            return `rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)})`;
+        }
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 150) + 150);
+        }
+        //選擇器
+        function qs(queryTarget) {
+            let ele = document.querySelector(queryTarget);
+            return ele;
+        }
+        //全部選擇器
+        function qsA(queryTarget) {
+            let ele = document.querySelectorAll(queryTarget);
+            return ele;
+        }
+        //取得屬性 傳入節點,屬姓名
+        function getStyle(DOM, style) {
+            let prop = window.getComputedStyle(DOM).getPropertyValue(style);
+            return prop;
+        }
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    </script>
+
+</body>
+
+</html>

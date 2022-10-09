@@ -253,3 +253,20 @@ function clipArr(arrin, amount, page) {
 
 }
 
+//選擇器
+function qs(queryTarget) {
+    let ele = document.querySelector(queryTarget);
+    return ele;
+}
+
+//全部選擇器
+function qsA(queryTarget) {
+    let ele = document.querySelectorAll(queryTarget);
+    return ele;
+}
+
+//取得屬性 傳入節點,屬姓名
+function getStyle(DOM, style) {
+    let prop = window.getComputedStyle(DOM).getPropertyValue(style);
+    return prop;
+}
