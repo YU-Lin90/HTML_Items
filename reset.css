@@ -52,3 +52,11 @@ table {
 img{
 	width: 100%;
 }
+
+a{
+	text-decoration: none;
+	color: inherit;
+}
+a:visited{
+	color: inherit;
+}
