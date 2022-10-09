@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>054_OpenDoor</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+
+        .bgc1 {
+            background-color: #ccf;
+        }
+
+        .bgc2 {
+            background-color: #cfc;
+        }
+
+        .doorLeft {
+            background-color: #3a3;
+
+        }
+
+        .doorRight {
+            background-color: #33a;
+        }
+        .doorOutFrame{
+            position: sticky;
+            width: 100%;
+            height: 100%;
+        }
+        .doors {
+            transition: .8s;
+        }
+
+        .doorLeft.move {
+            transform: translateX(-120%);
+        }
+
+        .doorRight.move {
+            transform: translateX(120%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="h100vh bgc1">
+
+    </section>
+
+    <section class="h300vh bgc2 sec2  po-r">
+        <div class="doorOutFrame disf">            
+            
+            <div class=" doors doorLeft w50p h100p "></div>
+            <div class=" doors doorRight w50p h100p "></div>
+
+        </div>
+
+    </section>
+    <section class="h100vh bgc1">
+
+    </section>
+
+
+    <script>
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //種類特效處理
+
+        //區域
+        let typesOutFrame = qs(".sec2");
+        //移動框
+        let movingFrame = qs(".movingFrame");
+
+        //左側門
+        let leftDoor = qs(".doorLeft");
+
+        //右側門
+        let rightDoor = qs(".doorRight");
+
+        window.addEventListener("scroll", () => {
+            //區域位置
+            let secY = typesOutFrame.offsetTop;
+            //滾輪位置
+            let scroolYnow = window.scrollY;
+            //廣告圖
+            // let nodes = qsA(".clips");
+            //區域高
+            let frameHeight = parseInt(getStyle(typesOutFrame, "height"));
+            //前四張圖
+            if (scroolYnow >= secY -20) {
+                leftDoor.classList.add("move");
+                rightDoor.classList.add("move");
+            }
+
+        })
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //通用函式
+        function getInt(x) {
+            return Math.floor(Math.random() * x);
+        }
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.1), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5)`;
+        }
+        function getColor() {
+            return `rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)})`;
+        }
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 150) + 150);
+        }
+        //選擇器
+        function qs(queryTarget) {
+            let ele = document.querySelector(queryTarget);
+            return ele;
+        }
+        //全部選擇器
+        function qsA(queryTarget) {
+            let ele = document.querySelectorAll(queryTarget);
+            return ele;
+        }
+        //取得屬性 傳入節點,屬姓名
+        function getStyle(DOM, style) {
+            let prop = window.getComputedStyle(DOM).getPropertyValue(style);
+            return prop;
+        }
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+    </script>
+
+</body>
+
+</html>
