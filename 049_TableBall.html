@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,14 +9,14 @@
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="CssTemplate.css">
     <style>
-
-        .gamePlate{
+        .gamePlate {
             width: 600px;
             height: 300px;
             background-color: #ccc;
             position: relative;
         }
-        .balls{
+
+        .balls {
             position: absolute;
             width: 30px;
             aspect-ratio: 1;
@@ -23,12 +24,15 @@
             background-color: #Fcc;
             translate: -50% -50%;
         }
-        .motherBall{
+
+        .motherBall {
             background-color: #fff;
             top: 50%;
             left: 20%;
+            /* transition: 2s; */
         }
-        .ball01{
+
+        .ball01 {
             top: 50%;
             left: 50%;
         }
@@ -37,35 +41,61 @@
 
 
 </head>
-<body>
-    
-    <div class="gamePlate">
+
+<body class="w100p h100vh disf ai-c jc-c fd-c">
+
+    <div class="gamePlate marb20">
         <div class="balls motherBall"></div>
 
-        <div class="balls ball01"></div>
-        <!-- <div class="balls ball02"></div>
-        <div class="balls ball03"></div>
-        <div class="balls ball04"></div>
-        <div class="balls ball05"></div>
-        <div class="balls ball06"></div>
-        <div class="balls ball07"></div>
-        <div class="balls ball08"></div>
-        <div class="balls ball09"></div>
-        <div class="balls ball10"></div>
-        <div class="balls ball11"></div>
-        <div class="balls ball12"></div>
-        <div class="balls ball13"></div>
-        <div class="balls ball14"></div>
-        <div class="balls ball15"></div> -->
+
     </div>
 
+    <button id="testButton">GO</button>
 
 
 
 
 
+    <script src="function.js"></script>
+    <script>
+        let motherBall = qs(".motherBall");
+
+        let BTN = qs("#testButton");
+
+        //摩擦力
+        let friction = 10;
+
+        //輸入功
+        let power = 10;
+
+        //停下秒數(不考慮碰撞)
+        let stopTime =  1  / power / power ;
 
 
+
+        BTN.addEventListener("click", () => {
+
+            BTN.disabled = true;
+            //對於檯面的位置
+
+            let ballX = motherBall.offsetLeft;
+            console.log("offsetLeft", motherBall.offsetLeft);
+
+            let ballY = motherBall.offsetTop;
+            console.log("offsetTop", motherBall.offsetTop);
+
+            motherBall.style.transition = `${stopTime}s`
+
+            newX = ballX + power * power;
+
+            motherBall.style.left = `${newX}px`;
+
+            setTimeout(() => {
+                BTN.disabled = false;
+            }, (stopTime + 1) * 1000 );
+        })
+    </script>
 
 </body>
+
 </html>
