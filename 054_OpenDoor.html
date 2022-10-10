@@ -100,31 +100,6 @@
 
         })
         //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
-        //通用函式
-        function getInt(x) {
-            return Math.floor(Math.random() * x);
-        }
-        //獲得正整數 含輸入的數到0 
-        function getIntTo0(x) {
-            return Math.floor(Math.random() * (x + 1));
-        }
-        //獲得正整數 含輸入的數到1 
-        function getIntTo1(x) {
-            return Math.floor(Math.random() * x + 1);
-        }
-        //獲得正整數範圍，有含上限(最小值,最大值)
-        function getIntRange(min, max) {
-            return Math.floor(Math.random() * (max + 1 - min) + min);
-        }
-        function getRBGA() {
-            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.1), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5)`;
-        }
-        function getColor() {
-            return `rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)})`;
-        }
-        function getRandomInt(max) {
-            return Math.floor(Math.random() * Math.floor(max - 150) + 150);
-        }
         //選擇器
         function qs(queryTarget) {
             let ele = document.querySelector(queryTarget);
