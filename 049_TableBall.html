@@ -23,13 +23,14 @@
             border-radius: 50%;
             background-color: #Fcc;
             translate: -50% -50%;
+
         }
 
         .motherBall {
-            background-color: #fff;
+            background-color: #999;
             top: 50%;
             left: 20%;
-            /* transition: 2s; */
+            transition: 1s linear;
         }
 
         .ball01 {
@@ -58,42 +59,152 @@
 
     <script src="function.js"></script>
     <script>
+        //桌
+        let gamePlate = qs(".gamePlate");
+
+        //桌寬
+        let gamePlateWidth = parseInt(getStyle(gamePlate, "width"));
+        console.log("桌寬:", gamePlateWidth);
+
+        //桌長
+        let gamePlateHeight = parseInt(getStyle(gamePlate, "height"));
+        console.log("桌長:", gamePlateHeight);
+
+        //母球
         let motherBall = qs(".motherBall");
 
+        //球半徑
+        let ballRadius = parseInt(getStyle(motherBall, "width")) / 2;
+        console.log("球半徑", ballRadius);
+
+        //扣球半徑桌寬
+        let trueWidth = gamePlateWidth - ballRadius;
+
+        //按鈕
         let BTN = qs("#testButton");
 
-        //摩擦力
-        let friction = 10;
+        //摩擦力(加速度)
+        let frictionAcceleration = 300;
+        // console.log("摩擦力:", frictionAcceleration);
 
-        //輸入功
-        let power = 10;
+        //初速(出桿力量)
+        let originVelocity = 1000;
+        // console.log("初速:", originVelocity);
 
         //停下秒數(不考慮碰撞)
-        let stopTime =  1  / power / power ;
+        let stopTime = originVelocity / frictionAcceleration;
+        // console.log("停下秒數:", stopTime);
 
+        //碰牆次數判斷
+        let collipseTime = 0;
 
+        //x = X0 + V0t + 1/2 a * t^2
+
+        //v = v0 + a * t
+
+        //彈性碰撞公式(動量守恆)  遇牆壁可設衰減係數
+        //m1v1 + m2v2 = m1v1' +m2v2'
+
+        //牆壁衰減係數
+        let wallWeakenCoeffcient = 0.95;
+
+        let ballInterval = null;
 
         BTN.addEventListener("click", () => {
 
             BTN.disabled = true;
-            //對於檯面的位置
 
+
+            //母球對於檯面的X
             let ballX = motherBall.offsetLeft;
-            console.log("offsetLeft", motherBall.offsetLeft);
+            // console.log("母球對於檯面的X", motherBall.offsetLeft);
 
-            let ballY = motherBall.offsetTop;
-            console.log("offsetTop", motherBall.offsetTop);
+            // let ballY = motherBall.offsetTop;
+            // console.log("母球對於檯面的Y", motherBall.offsetTop);
 
-            motherBall.style.transition = `${stopTime}s`
 
-            newX = ballX + power * power;
+            //計算總距離
+            let totalX = ballX + originVelocity * stopTime - (frictionAcceleration * stopTime * stopTime / 2);
+            // console.log("未判斷前位移量", newX);
 
-            motherBall.style.left = `${newX}px`;
+            //球對桌邊的距離
+            let ballWallDistance = trueWidth - ballX;
+
+            // if(totalX > trueWidth)
+
+
+
+
+
+
+
+
+            for (let i = 1; i <= stopTime; i++) {
+
+                setTimeout(() => {
+
+                    let nextX = ballX + originVelocity * i - (frictionAcceleration * i * i / 2);
+                    
+
+                    //碰牆判定
+                    if (nextX > trueWidth) {
+
+                        //碰牆後多餘距離
+                        let gaps = nextX - trueWidth;
+                        // console.log("碰牆後多餘距離", gaps);
+
+                        //碰牆計算後位置
+                        nextX = trueWidth - (gaps * wallWeakenCoeffcient);
+                        // console.log("碰牆計算後位置", newX);
+                   }
+                   ballX = nextX;
+
+
+                    motherBall.style.left = `${ballX}px`;
+
+                    console.log("i", i);
+                    console.log("nextX", nextX);
+
+
+                }, (i - 1) * 1000)
+
+            }
+
+            setTimeout(() => {
+
+                clearInterval(ballInterval);
+
+            }, stopTime * 1000)
+
+
+
+            //碰牆次數判斷   collipseTime
+
+
+            // console.log("判斷後位移量", newX);
+
+
+
+            // motherBall.style.left = `${newX}px`;
 
             setTimeout(() => {
                 BTN.disabled = false;
-            }, (stopTime + 1) * 1000 );
+                let ballNewX = motherBall.offsetLeft;
+                console.log("移動完成位置", ballNewX);
+            }, (stopTime + 1) * 1000);
         })
+
+
+
+
+
+
+
+
+
+
+
+        //備用 cubic-bezier(0,.71,0,1.01)
     </script>
 
 </body>
