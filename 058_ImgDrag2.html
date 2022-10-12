@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>058_ImgSort</title>
+    <title>058_ImgDrag2</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="CssTemplate.css">
     <style>
@@ -18,13 +18,13 @@
             flex-wrap: wrap;
             position: relative;
             /* justify-content: center; */
-            border: 1px RED solid;
+            border: 1px red solid;
         }
 
         .cols {
             width: 25%;
             padding: 10px;
-            position: absolute;
+            position: relative;
             /* display: inline-block; */
             z-index: 2;
         }
@@ -45,34 +45,34 @@
 <body>
 
     <div class="outterFrame">
-        <div class="cols col1">
+        <div draggable="false" class="cols col1">
             <div class="imgFR"><img draggable="false" src="./images/icon01.png" alt=""></div>
         </div>
-        <div class="cols col2">
+        <div draggable="false" class="cols col2">
             <div class="imgFR"><img draggable="false" src="./images/icon02.png" alt=""></div>
         </div>
-        <div class="cols col3">
+        <div draggable="false" class="cols col3">
             <div class="imgFR"><img draggable="false" src="./images/icon03.png" alt=""></div>
         </div>
-        <div class="cols col4">
+        <div draggable="false" class="cols col4">
             <div class="imgFR"><img draggable="false" src="./images/icon04.png" alt=""></div>
         </div>
-        <div class="cols col5">
+        <div draggable="false" class="cols col5">
             <div class="imgFR"><img draggable="false" src="./images/icon05.png" alt=""></div>
         </div>
-        <div class="cols col6">
+        <div draggable="false" class="cols col6">
             <div class="imgFR"><img draggable="false" src="./images/icon06.png" alt=""></div>
         </div>
-        <div class="cols col7">
+        <div draggable="false" class="cols col7">
             <div class="imgFR"><img draggable="false" src="./images/icon01.png" alt=""></div>
         </div>
-        <div class="cols col8">
+        <div draggable="false" class="cols col8">
             <div class="imgFR"><img draggable="false" src="./images/icon02.png" alt=""></div>
         </div>
     </div>
 
 
-    <script src="/function.js"></script>
+    <script src="./function.js"></script>
     <script>
 
         //拖曳狀態
@@ -118,9 +118,13 @@
 
         //設定順序
         cols.forEach((element, index) => {
-            // element.style.order = index;
+            element.style.order = index;
 
-            colsPositions[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+            // parseInt(getStyle(element, "left"))
+            // parseInt(getStyle(element, "top"))
+            // colsPositions[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+
+            colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
 
             //按下滑鼠
             element.addEventListener("mousedown", (evt) => {
@@ -133,6 +137,7 @@
                 dragNowPosition.Y = colsPositions[index].Y
 
                 element.style.zIndex = 10;
+                // console.log(index);
 
             })
             //移動滑鼠
@@ -191,7 +196,7 @@
         }
         //取消拖移
         function mouseExit(element, index) {
-            colsPositions[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+            colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
             mouseStatus[index] = false;
             element.style.zIndex = 1;
         };

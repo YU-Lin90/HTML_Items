@@ -103,14 +103,14 @@
         let ballRadius = 200;
 
         //一圈幾個
-        let shapeAmount = 15;
+        let shapeAmount = 20;
 
         let degree = 360 / shapeAmount;
 
         let index = 0;
 
         //小圖形寬
-        let setWidth = 50;
+        let setWidth = 20;
 
         $(".rotateBox").width(ballRadius)
         Math.cos()
@@ -186,9 +186,9 @@
                 let moveRatioV = yDistance / ballHeight;
 
 
-                // dragBall.style.transform = `rotateX(${moveRatioV * -90}deg) rotateY(${moveRatioH * 90}deg)`
+                dragBall.style.transform = `rotateX(${moveRatioV * -90}deg) rotateY(${moveRatioH * 90}deg)`
 
-                dragBall.style.transform = ` rotateY(${moveRatioH * 90}deg)`
+                // dragBall.style.transform = ` rotateY(${moveRatioH * 90}deg)`
                 // console.log(moveRatioH);
 
 
