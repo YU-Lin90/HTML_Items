@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>056_DragBall</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        body {
+            background-color: #ccc;
+        }
+
+        .viewerBox {
+
+            orientation: 800px;
+            width: 500px;
+            height: 500px;
+            margin: 200px auto 0;
+            /* perspective-origin:50% 50% ; */
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rotateBox {
+            transform-style: preserve-3d;
+            /* orientation: 1000px; */
+            /* animation: ballRotate 8s linear infinite; */
+            transform-origin: 50% 50%;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* border: 6px solid red; */
+        }
+
+        .rotateBox>div {
+            position: absolute;
+            width: 20px;
+            aspect-ratio: 1;
+            border-radius: 40%;
+            /* backface-visibility: hidden; */
+            /* text-align: center; */
+        }
+
+        .compoment {
+            /* clip-path: polygon(20% 0, 100% 80%, 50% 100%); */
+            transform-origin: 50% 50%;
+            opacity: 0.8;
+            /* transform: translateZ(500px); */
+        }
+
+
+
+        @keyframes ballRotate {
+            from {
+                transform: rotateY(0);
+            }
+
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="viewerBox">
+        <div class="rotateBox">
+
+        </div>
+    </div>
+
+    <script src="./script/jquery-3.6.1.min.js"></script>
+    <script>
+
+
+
+
+        // var tr = $('#yuanpan').css('transform')
+
+        // var values = tr.split('(')[1].split(')')[0].split(',');
+        // var a = values[0];
+        // var b = values[1];
+        // var c = values[2];
+        // var d = values[3];
+        // var scale = Math.sqrt(a * a + b * b);
+        // console.log('Scale: ' + scale);
+        // // arc sin, convert from radians to degrees, round
+        // var sin = b / scale;
+        // // next line works for 30deg but not 130deg (returns 50);
+        // // var angle = Math.round(Math.asin(sin) * (180/Math.PI));
+        // var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        // console.log('Rotate: ' + angle + 'deg');
+
+
+
+        //球半徑
+        let ballRadius = 200;
+
+        //一圈幾個
+        let shapeAmount = 15;
+
+        let degree = 360 / shapeAmount;
+
+        let index = 0;
+
+        //小圖形寬
+        let setWidth = 50;
+
+        $(".rotateBox").width(ballRadius)
+        Math.cos()
+        for (let i = 0; i < shapeAmount; i++) {
+
+            for (let j = 0; j < shapeAmount; j++) {
+                $(".rotateBox").append("<div class='compoment autobg'></div>");
+                $(".compoment").eq(index).css("transform", ` rotateY(${i * degree}deg) rotateX(${j * degree}deg) rotateZ(${0}deg) translateZ(${ballRadius}px)`)
+                    .css("width", setWidth);
+                index++;
+            }
+        }
+
+        //拖曳大球
+        let dragBall = qs(".rotateBox");
+
+        //大球寬
+        let ballWidth = parseInt(getStyle(dragBall, "width"));
+        //大球高
+        let ballHeight = parseInt(getStyle(dragBall, "height"));
+
+        //儲存滑鼠座標物件
+        let mouseEvent = {
+            "dragStatus": false,
+            "xDown": 0,
+            "yDown": 0,
+            "xUp": 0,
+            "yUp": 0
+        }
+
+
+        //按下設定狀態
+        dragBall.addEventListener("mousedown", (evt) => {
+            mouseEvent.xDown = evt.clientX;
+            mouseEvent.yDown = evt.clientY;
+            mouseEvent.dragStatus = true;
+            // console.log(mouseEvent);
+            let checkStyle1 = getStyle(dragBall, "transform")
+            let checkStyle2 = getStyle(dragBall, "matrix3d")
+            console.log(checkStyle1);
+            console.log(checkStyle2);
+            console.log($(".rotateBox").css("transform"));
+        })
+        //放開設定狀態
+        window.addEventListener("mouseup", (evt) => {
+            mouseEvent.xUp = evt.clientX;
+            mouseEvent.yUp = evt.clientY;
+            mouseEvent.dragStatus = false;
+
+
+            // console.log(mouseEvent);
+        })
+        //滑鼠移動
+        dragBall.addEventListener("mousemove", (evt) => {
+
+            if (mouseEvent.dragStatus) {
+                let mouseNowX = evt.clientX;
+                let mouseNowY = evt.clientY;
+                // console.log(1);
+
+                //X移動量
+                let xDistance = mouseNowX - mouseEvent.xDown;
+                //Y移動量
+                let yDistance = mouseNowY - mouseEvent.yDown;
+
+                //大球寬
+                //ballWidth
+
+                //橫向移動量比例
+                let moveRatioH = xDistance / ballWidth;
+
+                //縱向移動量比例
+                let moveRatioV = yDistance / ballHeight;
+
+
+                // dragBall.style.transform = `rotateX(${moveRatioV * -90}deg) rotateY(${moveRatioH * 90}deg)`
+
+                dragBall.style.transform = ` rotateY(${moveRatioH * 90}deg)`
+                // console.log(moveRatioH);
+
+
+            }
+
+        })
+
+        //獲得正整數範圍，有含上限(最小值,最大值)
+        function getIntRange(min, max) {
+            return Math.floor(Math.random() * (max + 1 - min) + min);
+        }
+
+        //獲得正整數 含輸入的數到0 
+        function getIntTo0(x) {
+            return Math.floor(Math.random() * (x + 1));
+        }
+        //獲得正整數 含輸入的數到1 
+        function getIntTo1(x) {
+            return Math.floor(Math.random() * x + 1);
+        }
+        //選擇器
+        function qs(queryTarget) {
+            return document.querySelector(queryTarget);
+        }
+
+        //全部選擇器
+        function qsA(queryTarget) {
+            return document.querySelectorAll(queryTarget);
+        }
+
+        //取得屬性 傳入節點,屬姓名
+        function getStyle(DOM, style) {
+            return window.getComputedStyle(DOM).getPropertyValue(style);
+        }
+
+    </script>
+
+
+
+
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 50) + 100);
+        }
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+        }
+
+        const elements = document.querySelectorAll('.autobg');
+
+        Array.from(elements).forEach((element, index) => {
+            element.style.backgroundImage = getRBGA();
+        });
+
+    // $('.autobg').each(function (index, currentElement) {
+    //     currentElement.style.backgroundImage = getRBGA();
+    // });
+    </script>
+</body>
+
+</html>
