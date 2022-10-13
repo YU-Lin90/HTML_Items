@@ -143,7 +143,6 @@
         let colsAmount = cols.length;
         // console.log(colsAmount);
 
-
         //設定順序
         cols.forEach((element, index) => {
             //設定index orders
@@ -211,9 +210,6 @@
                     e.currentTarget.style.top = `${newY}px`;
                     e.currentTarget.style.left = `${newX}px`;
 
-
-
-
                     //原始位置
                     //colsOffset[index]
                     //console.log(colsOffset[index]);
@@ -233,10 +229,10 @@
                 // console.log("※※※※※※※※※※※");
 
 
-                if (X2 != colsChooseNow.X) {
+                if (X2 != colsChooseNow.X && X2 >= 0 && X2 < totalCols) {
                     // console.log("超過");
                     //移動的格數
-                    gridAmountX = X2 - colsChooseNow.X;
+                    let gridAmountX = X2 - colsChooseNow.X;
                     // console.log(gridAmountX);
 
                     //暫存序數 (替換者原本的位置)
@@ -250,9 +246,9 @@
                     colsIndexs[index] = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]];
 
                     //被替換者更換序數
-                    //被替患者的INDEX
-                    let changedIndex = colsSequence[ tempOrder + gridAmountX];
-                    cols[colsSequence[ tempOrder + gridAmountX]].style.order = tempOrder;
+                    //被替換者的INDEX
+                    let changedIndex = colsSequence[tempOrder + gridAmountX];
+                    cols[colsSequence[tempOrder + gridAmountX]].style.order = tempOrder;
 
                     //被替換者序數列表替換
                     colsIndexs[colsSequence[tempOrder + gridAmountX]] = tempOrder;
@@ -260,9 +256,9 @@
                     // mouseExit(element, index);
 
                     //位置列表更新
-                    colsSequence[tempOrder] =  changedIndex ;
+                    colsSequence[tempOrder] = changedIndex;
                     colsSequence[tempOrderChange] = index;
-                    
+
 
                 }
                 colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
