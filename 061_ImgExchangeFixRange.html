@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>060_ImgExchange2Axis</title>
+    <title>061_ImgExchangeFixRange</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="CssTemplate.css">
     <style>
@@ -260,7 +260,7 @@
                     // console.log("相同");
                 }
 
-                //替換判斷
+                //合併判斷
                 //(不是同一個)
                 //(sameJudge)
                 //(X軸在行數範圍內)
@@ -293,6 +293,9 @@
 
                     //被替換者序數列表替換
                     colsIndexs[changedIndex] = tempOrder;
+
+                    // mouseExit(element, index);
+
 
                     //替換者位置列表更新
                     colsSequence[tempOrderChange] = index;
