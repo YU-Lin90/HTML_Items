@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>059_ImgSort1Axis</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <style>
+        /* *{
+            outline: 1px solid #cfc;
+        } */
+        .outterFrame {
+            width: 500px;
+            /* height: 500px; */
+            margin: 50px auto;
+            display: flex;
+            /* flex-direction: column; */
+            flex-wrap: wrap;
+            position: relative;
+            /* justify-content: center; */
+            border: 1px red solid;
+        }
+
+        .cols {
+            width: 25%;
+            padding: 10px;
+            position: relative;
+            /* display: inline-block; */
+            z-index: 2;
+        }
+
+        .imgFR {
+            border: 1px aqua solid;
+            width: 100%;
+            aspect-ratio: 1;
+            line-height: 0;
+        }
+
+        .imgFR img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="outterFrame">
+        <div draggable="false" class="cols col1">
+            <div class="imgFR"><img draggable="false" src="./images/icon01.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col2">
+            <div class="imgFR"><img draggable="false" src="./images/icon02.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col3">
+            <div class="imgFR"><img draggable="false" src="./images/icon03.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col4">
+            <div class="imgFR"><img draggable="false" src="./images/icon04.png" alt=""></div>
+        </div>
+        <!-- <div draggable="false" class="cols col5">
+            <div class="imgFR"><img draggable="false" src="./images/icon05.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col6">
+            <div class="imgFR"><img draggable="false" src="./images/icon06.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col7">
+            <div class="imgFR"><img draggable="false" src="./images/icon01.png" alt=""></div>
+        </div>
+        <div draggable="false" class="cols col8">
+            <div class="imgFR"><img draggable="false" src="./images/icon02.png" alt=""></div>
+        </div> -->
+    </div>
+
+
+    <script src="./function.js"></script>
+    <script>
+
+        //拖曳狀態
+        let mouseStatus = [];
+
+        //按下時滑鼠位置
+        let mouseDownPosition = { "X": 0, "Y": 0 };
+
+        //全子元素位置TOP、LEFT 原始0,0
+        let colsPositions = [];
+
+        //全子元素對父元素位置 格子位置
+        let colsOffset = [];
+
+        //點選的框原始位置
+        let colsChooseNow = { "X": 0, "Y": 0 };
+
+        //設定index orders 子元素的序列、位置 序數=位置
+        let colsIndexs = [];
+
+        //暫存order
+        // let tempOrder = null;
+
+        //第幾位的位置是誰
+        let colsSequence = [];
+
+        //展示框
+        let photoFrame = qs(".outterFrame")
+
+        //展示框位置
+        let framePosition = { "X": photoFrame.offsetLeft, "Y": photoFrame.offsetTop };
+        // console.log(framePosition);
+
+        //大框屬性
+        let frameWidth = parseInt(getStyle(photoFrame, "width"));
+        let frameHeight = parseInt(getStyle(photoFrame, "height"));
+        // console.log("frameWidth", frameWidth);
+        // console.log("frameHeight", frameHeight);
+
+        //小框屬性
+        let colsWidth = parseInt(getStyle(qs(".cols"), "width"));
+        let colsHeight = parseInt(getStyle(qs(".cols"), "height"));
+        // console.log(colsWidth);
+        // console.log(colsHeight);
+
+        //行列各幾個
+        //一列幾個  橫
+        let totalCols = Math.floor(frameWidth / colsWidth);
+        // console.log(colsNumber);
+        //一行幾個  縱
+        let totalRows = Math.floor(frameHeight / colsHeight);
+        // console.log(rowsNumber);
+
+        //現在拖誰
+        let dragNow = null;
+
+        //現在拖的原始位置
+        let dragNowPosition = { "X": 0, "Y": 0 };
+
+        //選全部圖框
+        let cols = qsA(".cols");
+        // console.log(cols);
+
+        //小框總數
+        let colsAmount = cols.length;
+        // console.log(colsAmount);
+
+        //設定順序
+        cols.forEach((element, index) => {
+            //設定index orders
+            colsIndexs[index] = index;
+            element.style.order = index;
+            //設定初始位置
+            colsSequence[index] = index;
+        })
+
+
+        //設定順序
+        cols.forEach((element, index) => {
+
+
+            // parseInt(getStyle(element, "left"))
+            // parseInt(getStyle(element, "top"))
+
+            colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+
+            colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
+
+            //按下滑鼠
+            element.addEventListener("mousedown", (evt) => {
+                mouseStatus[index] = true;
+
+                mouseDownPosition.X = evt.clientX;
+                mouseDownPosition.Y = evt.clientY;
+                //選擇原始位置
+                dragNowPosition.X = colsPositions[index].X
+                dragNowPosition.Y = colsPositions[index].Y
+
+                element.style.zIndex = 10;
+                // console.log(index);
+                //原始位置(方格座標)
+                colsChooseNow.X = Math.floor(element.offsetLeft / colsWidth);
+                colsChooseNow.Y = Math.floor(element.offsetTop / colsHeight);
+                // console.log(colsChooseNow.X , colsChooseNow.Y);
+            })
+            //移動滑鼠
+            element.addEventListener("mousemove", (e) => {
+                if (mouseStatus[index]) {
+                    // console.log(index);
+                    // e.currentTarget;
+                    // console.log(e.currentTarget);
+
+                    // console.log(element.offsetTop);
+
+                    // dragMove(e, index);
+
+                    //現在滑鼠的位置 已扣掉展示框距離
+                    let mousePositionNowX = e.clientX;
+                    let mousePositionNowY = e.clientY;
+
+                    //與按下位置的移動距離
+                    let movedX = mouseDownPosition.X - mousePositionNowX;
+                    let movedY = mouseDownPosition.Y - mousePositionNowY;
+                    // console.log("與按下位置的移動距離",movedY);
+                    // console.log(colsPositions[index].Y);
+
+                    //新位置
+                    let newX = colsPositions[index].X - movedX;
+                    let newY = colsPositions[index].Y - movedY;
+
+                    //設定位置
+                    e.currentTarget.style.top = `${newY}px`;
+                    e.currentTarget.style.left = `${newX}px`;
+
+                    //原始位置
+                    //colsOffset[index]
+                    //console.log(colsOffset[index]);
+                    // let 
+
+
+
+                }
+
+            })
+            //放開滑鼠  包括離開元素(拖太快)
+            element.addEventListener("mouseup", () => {
+
+                let X2 = Math.floor(element.offsetLeft / colsWidth);
+                let Y2 = Math.floor(element.offsetTop / colsHeight);
+                // console.log("X2,Y2", X2 + "," + Y2);
+                // console.log("※※※※※※※※※※※");
+
+
+                if (X2 != colsChooseNow.X && X2 >= 0 && X2 < totalCols) {
+                    // console.log("超過");
+                    //移動的格數
+                    let gridAmountX = X2 - colsChooseNow.X;
+                    // console.log(gridAmountX);
+
+                    //暫存序數 (替換者原本的位置)
+                    let tempOrder = colsIndexs[index];
+
+                    //設定新序數 (被替換者原本的位置)
+                    let tempOrderChange = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]]
+                    element.style.order = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]];
+
+                    //替換者序數列表替換
+                    colsIndexs[index] = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]];
+
+                    //被替換者更換序數
+                    //被替換者的INDEX
+                    let changedIndex = colsSequence[tempOrder + gridAmountX];
+                    cols[colsSequence[tempOrder + gridAmountX]].style.order = tempOrder;
+
+                    //被替換者序數列表替換
+                    colsIndexs[colsSequence[tempOrder + gridAmountX]] = tempOrder;
+
+                    // mouseExit(element, index);
+
+                    //位置列表更新
+                    colsSequence[tempOrder] = changedIndex;
+                    colsSequence[tempOrderChange] = index;
+
+
+                }
+                colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+                element.style.top = "0px";
+                element.style.left = "0px";
+                mouseExit(element, index)
+            })
+
+            element.addEventListener("mouseleave", () => {
+                mouseExit(element, index)
+            })
+
+
+            // console.log();
+        });
+
+        window.addEventListener("mouseup", () => {
+            mouseStatus.forEach((value) => {
+                value = false;
+            })
+        })
+        // console.log(colsPositions);
+        // photoFrame.addEventListener("mouseleave", () => {
+        //     mouseStatus.forEach((value) => {
+        //         value = false;
+        //     })
+        // })
+
+
+
+        //拖動函式
+        // function dragMove(e, index) {
+        //     //現在滑鼠的位置 已扣掉展示框距離
+        //     let mousePositionNowX = e.clientX;
+        //     let mousePositionNowY = e.clientY;
+        //     // console.log(e.clientY);
+        //     // console.log(mousePositionNowY);
+        //     //與按下位置的移動距離
+        //     let movedX = mouseDownPosition.X - mousePositionNowX;
+        //     let movedY = mouseDownPosition.Y - mousePositionNowY;
+        //     // console.log("與按下位置的移動距離",movedY);
+        //     // console.log(colsPositions[index].Y);
+
+        //     // colsPositions[index].X;
+        //     // colsPositions[index].Y;
+
+        //     e.currentTarget.style.top = `${colsPositions[index].Y - movedY}px`;
+        //     e.currentTarget.style.left = `${colsPositions[index].X - movedX}px`;
+        // }
+
+
+        //取消拖移
+        function mouseExit(element, index) {
+            // colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
+            // colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+            mouseStatus[index] = false;
+            element.style.zIndex = 1;
+        };
+
+
+    </script>
+</body>
+
+</html>

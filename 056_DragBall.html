@@ -23,6 +23,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            
         }
 
         .rotateBox {
@@ -36,13 +37,15 @@
             justify-content: center;
             align-items: center;
             /* border: 6px solid red; */
+            cursor: grab;
+            
         }
 
         .rotateBox>div {
             position: absolute;
             width: 20px;
             aspect-ratio: 1;
-            border-radius: 40%;
+            border-radius: 10%;
             /* backface-visibility: hidden; */
             /* text-align: center; */
         }
@@ -69,8 +72,8 @@
 </head>
 
 <body>
-    <div class="viewerBox">
-        <div class="rotateBox">
+    <div draggable="false" class="viewerBox">
+        <div draggable="false" class="rotateBox">
 
         </div>
     </div>
@@ -103,14 +106,16 @@
         let ballRadius = 200;
 
         //一圈幾個
-        let shapeAmount = 20;
+        let shapeAmount = 8;
 
         let degree = 360 / shapeAmount;
 
         let index = 0;
 
         //小圖形寬
-        let setWidth = 20;
+        let setWidth = 100;
+
+
 
         $(".rotateBox").width(ballRadius)
         Math.cos()
@@ -119,7 +124,7 @@
             for (let j = 0; j < shapeAmount; j++) {
                 $(".rotateBox").append("<div class='compoment autobg'></div>");
                 $(".compoment").eq(index).css("transform", ` rotateY(${i * degree}deg) rotateX(${j * degree}deg) rotateZ(${0}deg) translateZ(${ballRadius}px)`)
-                    .css("width", setWidth);
+                    .css("width", setWidth).attr("draggable",false);
                 index++;
             }
         }
@@ -131,6 +136,10 @@
         let ballWidth = parseInt(getStyle(dragBall, "width"));
         //大球高
         let ballHeight = parseInt(getStyle(dragBall, "height"));
+
+        //現在轉到哪
+        let rotateVNow = 0 ;
+        let rotateHNow = 0 ;
 
         //儲存滑鼠座標物件
         let mouseEvent = {
@@ -150,9 +159,10 @@
             // console.log(mouseEvent);
             let checkStyle1 = getStyle(dragBall, "transform")
             let checkStyle2 = getStyle(dragBall, "matrix3d")
-            console.log(checkStyle1);
-            console.log(checkStyle2);
-            console.log($(".rotateBox").css("transform"));
+            // console.log(checkStyle1);
+            // console.log(checkStyle2);
+            // console.log($(".rotateBox").css("transform"));
+            dragBall.style.cursor = "grabbing";
         })
         //放開設定狀態
         window.addEventListener("mouseup", (evt) => {
@@ -160,9 +170,28 @@
             mouseEvent.yUp = evt.clientY;
             mouseEvent.dragStatus = false;
 
-
+            let xDistance = mouseEvent.xUp - mouseEvent.xDown;
+            let yDistance = mouseEvent.yUp - mouseEvent.yDown;
+            let moveRatioH = xDistance / ballWidth;
+            let moveRatioV = yDistance / ballHeight;
+            rotateVNow = rotateVNow + moveRatioV * -90;
+            rotateHNow = rotateHNow + moveRatioH * 90;
+            dragBall.style.cursor = "grab";
             // console.log(mouseEvent);
         })
+        //離開設定狀態
+        // dragBall.addEventListener("mouseleave", (evt) => {
+        //     mouseEvent.xUp = evt.clientX;
+        //     mouseEvent.yUp = evt.clientY;
+        //     mouseEvent.dragStatus = false;
+
+        //     let xDistance = mouseEvent.xUp - mouseEvent.xDown;
+        //     let yDistance = mouseEvent.yUp - mouseEvent.yDown;
+        //     let moveRatioH = xDistance / ballWidth;
+        //     let moveRatioV = yDistance / ballHeight;
+        //     rotateVNow = rotateVNow + moveRatioV * -90;
+        //     rotateHNow = rotateHNow + moveRatioH * 90;
+        // })
         //滑鼠移動
         dragBall.addEventListener("mousemove", (evt) => {
 
@@ -185,8 +214,13 @@
                 //縱向移動量比例
                 let moveRatioV = yDistance / ballHeight;
 
+                //10131640
+                // rotateHNow
+                // rotateVNow
+                dragBall.style.transform = `rotateX(${rotateVNow + moveRatioV * -90}deg) rotateY(${rotateHNow + moveRatioH * 90}deg)`
 
-                dragBall.style.transform = `rotateX(${moveRatioV * -90}deg) rotateY(${moveRatioH * 90}deg)`
+                // rotateVNow = rotateVNow + moveRatioV * -90;
+                // rotateHNow = rotateHNow + moveRatioH * 90;
 
                 // dragBall.style.transform = ` rotateY(${moveRatioH * 90}deg)`
                 // console.log(moveRatioH);

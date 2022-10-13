@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>059_ImgSort</title>
+    <title>060_ImgExchange2Axis</title>
     <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="CssTemplate.css">
     <style>
@@ -60,13 +60,13 @@
         <div draggable="false" class="cols col4">
             <div class="imgFR"><img draggable="false" src="./images/icon04.png" alt=""></div>
         </div>
-        <!-- <div draggable="false" class="cols col5">
+        <div draggable="false" class="cols col5">
             <div class="imgFR"><img draggable="false" src="./images/icon05.png" alt=""></div>
         </div>
         <div draggable="false" class="cols col6">
             <div class="imgFR"><img draggable="false" src="./images/icon06.png" alt=""></div>
         </div>
-        <div draggable="false" class="cols col7">
+        <!-- <div draggable="false" class="cols col7">
             <div class="imgFR"><img draggable="false" src="./images/icon01.png" alt=""></div>
         </div>
         <div draggable="false" class="cols col8">
@@ -103,7 +103,7 @@
         let colsSequence = [];
 
         //展示框
-        let photoFrame = qs(".outterFrame")
+        let photoFrame = qs(".outterFrame");
 
         //展示框位置
         let framePosition = { "X": photoFrame.offsetLeft, "Y": photoFrame.offsetTop };
@@ -129,7 +129,7 @@
         let totalRows = Math.floor(frameHeight / colsHeight);
         // console.log(rowsNumber);
 
-        //現在拖誰
+        //現在拖誰  目前沒用到
         let dragNow = null;
 
         //現在拖的原始位置
@@ -206,16 +206,9 @@
                     let newX = colsPositions[index].X - movedX;
                     let newY = colsPositions[index].Y - movedY;
 
-                    //設定位置
+                    //設定位置(只有拖動相對位置)
                     e.currentTarget.style.top = `${newY}px`;
                     e.currentTarget.style.left = `${newX}px`;
-
-                    //原始位置
-                    //colsOffset[index]
-                    //console.log(colsOffset[index]);
-                    // let 
-
-
 
                 }
 
@@ -223,35 +216,54 @@
             //放開滑鼠  包括離開元素(拖太快)
             element.addEventListener("mouseup", () => {
 
+                // console.log("※※※※※※※※※※※");
+                //讀取現在的位置和序數
+                let chooseIndex = colsIndexs[index];
+                // console.log("更換前序數", chooseIndex);
+                //原本的位置
+                let nowX = parseInt(chooseIndex % (totalCols));
+                let nowY = parseInt(chooseIndex / (totalCols));
+                // console.log("原本在第幾行(X2)", nowX);
+                // console.log("原本在第幾列(Y2)", nowY);
+
+                //現在拖到的位置(格線位置)
                 let X2 = Math.floor(element.offsetLeft / colsWidth);
                 let Y2 = Math.floor(element.offsetTop / colsHeight);
-                // console.log("X2,Y2", X2 + "," + Y2);
-                // console.log("※※※※※※※※※※※");
+                // console.log("現在拖到第幾行(X2)", X2);
+                // console.log("現在拖到第幾列(Y2)", Y2);
 
+                //新位置轉換回序數
+                let newSequence = Y2 * totalCols + X2;
+                // console.log("新序數:",newSequence);
 
-                if (X2 != colsChooseNow.X && X2 >= 0 && X2 < totalCols) {
-                    // console.log("超過");
-                    //移動的格數
-                    let gridAmountX = X2 - colsChooseNow.X;
-                    // console.log(gridAmountX);
+                //相同判斷
+                let sameJudge = true;
+                if(X2 == colsChooseNow.X && Y2 == colsChooseNow.Y){
+                    sameJudge = false;
+                    // console.log("相同");
+                }
+
+                //合併判斷
+                if (sameJudge && X2 >= 0 && X2 < totalCols && Y2 >= 0 && Y2 < totalRows&& newSequence < colsAmount) {
+                    // console.log("變換");
 
                     //暫存序數 (替換者原本的位置)
-                    let tempOrder = colsIndexs[index];
+                    let tempOrder = chooseIndex;
 
                     //設定新序數 (被替換者原本的位置)
-                    let tempOrderChange = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]]
-                    element.style.order = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]];
+                    let tempOrderChange = newSequence;
+                    element.style.order = newSequence;
 
                     //替換者序數列表替換
-                    colsIndexs[index] = colsIndexs[colsSequence[colsIndexs[index] + gridAmountX]];
+                    colsIndexs[index] = tempOrderChange;
 
                     //被替換者更換序數
                     //被替換者的INDEX
-                    let changedIndex = colsSequence[tempOrder + gridAmountX];
-                    cols[colsSequence[tempOrder + gridAmountX]].style.order = tempOrder;
+                    let changedIndex = colsSequence[tempOrderChange];
+                    cols[changedIndex].style.order = tempOrder;
 
                     //被替換者序數列表替換
-                    colsIndexs[colsSequence[tempOrder + gridAmountX]] = tempOrder;
+                    colsIndexs[changedIndex] = tempOrder;
 
                     // mouseExit(element, index);
 
@@ -259,14 +271,10 @@
                     colsSequence[tempOrder] = changedIndex;
                     colsSequence[tempOrderChange] = index;
 
-
                 }
-                colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
-                element.style.top = "0px";
-                element.style.left = "0px";
                 mouseExit(element, index)
             })
-
+            //拉太快也回去
             element.addEventListener("mouseleave", () => {
                 mouseExit(element, index)
             })
@@ -274,7 +282,7 @@
 
             // console.log();
         });
-
+        
         window.addEventListener("mouseup", () => {
             mouseStatus.forEach((value) => {
                 value = false;
@@ -316,6 +324,8 @@
             // colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
             mouseStatus[index] = false;
             element.style.zIndex = 1;
+            element.style.top = "0px";
+            element.style.left = "0px";
         };
 
 
