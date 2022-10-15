@@ -42,10 +42,18 @@
         .imgFR img {
             width: 100%;
         }
+
+        .moveCountP {
+            font-size: 48px;
+            line-height: 48px;
+        }
     </style>
 </head>
 
 <body>
+    <div class="disf ai-c jc-c marV20">
+        <p class="moveCountP">計數:0</p>
+    </div>
 
     <div class="outterFrame">
         <!-- <div class="cols" draggable="false">
@@ -98,6 +106,10 @@
         </div> -->
 
     </div>
+    <div class="disf jc-c ai-c">
+        <button id="startButton">開始</button>
+    </div>
+
 
 
     <script src="./function.js"></script>
@@ -135,7 +147,7 @@
 
 
         let docFrag = document.createDocumentFragment();
-        //亂數產生
+        //產生圖片
         for (let i = 1; i <= 16; i++) {
             let setI = i;
             if (i < 10) {
@@ -192,171 +204,237 @@
         let colsAmount = cols.length;
         // console.log(colsAmount);
 
-        let totalArr = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+        //開始按鈕
+        let startButton = qs("#startButton");
+
+        //移動次數
+        let moveCount = 0
+
+        //計數框
+        let moveCountP = qs(".moveCountP");
+
+        //亂數排序用
+        let totalArr = [];
+        //檢查順序用
+        let checkArr = []
+
+        for (let i = 0; i < 16; i++) {
+            totalArr[i] = i;
+            checkArr[i] = i;
+        }
+
 
         //10150011
         totalArr.sort(() => Math.random() - 0.5)
         //colsIndexs 這個最後會照順序＊＊＊＊＊1015早上再改
-        //設定順序
-        cols.forEach((element, index) => {
 
-            //設定index orders
-            colsIndexs[index] = totalArr[index];
-            element.style.order = totalArr[index];
-            //設定初始位置
-            colsSequence[totalArr[index]] = index;
+
+        startButton.addEventListener("click", () => {
+            startButton.disabled = true;
+
+            //設定順序
+            cols.forEach((element, index) => {
+
+                //設定index orders
+                colsIndexs[index] = totalArr[index];
+                element.style.order = totalArr[index];
+                //設定初始位置
+                colsSequence[totalArr[index]] = index;
+            })
+
+
+            //設置監聽器、記錄原始位置
+            cols.forEach((element, index) => {
+
+
+                // parseInt(getStyle(element, "left"))
+                // parseInt(getStyle(element, "top"))
+
+                // colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
+
+                colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
+
+                //按下滑鼠
+                element.addEventListener("mousedown", function downEvent(evt) {
+                    mouseStatus[index] = true;
+                    //紀錄點下的位置
+                    mouseDownPosition.X = evt.clientX;
+                    mouseDownPosition.Y = evt.clientY;
+                    //選擇原始位置
+                    dragNowPosition.X = colsPositions[index].X
+                    dragNowPosition.Y = colsPositions[index].Y
+                    //設定Z座標浮起來
+                    element.style.zIndex = 10;
+                    // console.log(index);
+                    //原始位置(方格座標)
+                    colsChooseNow.X = Math.floor(element.offsetLeft / colsWidth);
+                    colsChooseNow.Y = Math.floor(element.offsetTop / colsHeight);
+                    // console.log(colsChooseNow.X , colsChooseNow.Y);
+                })
+                //移動滑鼠
+                element.addEventListener("mousemove", function moveEvent(e) {
+
+                    if (mouseStatus[index]) {
+                        // console.log(1);
+                        //現在滑鼠的位置
+                        let mousePositionNowX = e.clientX;
+                        let mousePositionNowY = e.clientY;
+
+                        //與按下位置的移動距離
+                        let movedX = mouseDownPosition.X - mousePositionNowX;
+                        let movedY = mouseDownPosition.Y - mousePositionNowY;
+                        // console.log("與按下位置的移動距離",movedY);
+                        // console.log(colsPositions[index].Y);
+
+                        //新位置
+                        let newX = colsPositions[index].X - movedX;
+                        let newY = colsPositions[index].Y - movedY;
+
+                        //設定位置(只有拖動相對位置)
+                        e.currentTarget.style.top = `${newY}px`;
+                        e.currentTarget.style.left = `${newX}px`;
+
+                    }
+
+                })
+                //放開滑鼠  包括離開元素(拖太快)
+                element.addEventListener("mouseup", function upEvent() {
+
+                    // console.log("※※※※※※※※※※※");
+                    //讀取現在的位置和序數
+                    let chooseIndex = colsIndexs[index];
+                    // console.log("更換前序數", chooseIndex);
+                    //原本的位置
+                    let nowX = parseInt(chooseIndex % (totalCols));
+                    let nowY = parseInt(chooseIndex / (totalCols));
+                    // console.log("原本在第幾行(X2)", nowX);
+                    // console.log("原本在第幾列(Y2)", nowY);
+
+                    //現在拖到的位置(格線位置)
+                    let X2 = Math.floor((element.offsetLeft + colsWidth / 2) / colsWidth);
+                    let Y2 = Math.floor((element.offsetTop + colsHeight / 2) / colsHeight);
+                    // console.log("現在拖到第幾行(X2)", X2);
+                    // console.log("現在拖到第幾列(Y2)", Y2);
+
+                    //新位置轉換回序數
+                    let newSequence = Y2 * totalCols + X2;
+                    // console.log("新序數:",newSequence);
+
+                    //相同判斷
+                    let sameJudge = true;
+                    if (X2 == colsChooseNow.X && Y2 == colsChooseNow.Y) {
+                        sameJudge = false;
+                        // console.log("相同");
+                    }
+
+                    //合併判斷
+                    //(不是同一個)
+                    //(sameJudge)
+                    //(X軸在行數範圍內)
+                    //(X2 >= 0 && X2 < totalCols)
+                    //(Y軸在列數範圍內)
+                    //(Y2 >= 0 && Y2 < totalRows)
+                    //(新序數不超過原本總數，避免沒完全填滿的空白)
+                    //(newSequence < colsAmount)
+                    // console.log("※※※※※※※※※※※※※※※※");
+                    // console.log("不是同一個",sameJudge);
+                    // console.log("X軸在行數範圍內",X2 >= 0 && X2 < totalCols);
+                    // console.log("Y軸在列數範圍內", Y2 >= 0 && Y2 < totalRows);
+                    // console.log(totalRows);
+                    // console.log("新序數不超過原本總數，避免沒完全填滿的空白",newSequence < colsAmount);
+                    if (sameJudge && X2 >= 0 && X2 < totalCols && Y2 >= 0 && Y2 < totalRows && newSequence < colsAmount) {
+                        // console.log("變換");
+
+                        //暫存序數 (替換者原本的位置)
+                        let tempOrder = chooseIndex;
+
+                        //設定新序數 (被替換者原本的位置)
+                        let tempOrderChange = newSequence;
+
+                        //替換者設定新Flex序數
+                        element.style.order = newSequence;
+
+                        //替換者序數列表替換
+                        colsIndexs[index] = tempOrderChange;
+
+                        //被替換者的INDEX
+                        let changedIndex = colsSequence[tempOrderChange];
+
+                        //被替換者設定新Flex序數
+                        cols[changedIndex].style.order = tempOrder;
+
+                        //被替換者序數列表替換
+                        colsIndexs[changedIndex] = tempOrder;
+
+                        // mouseExit(element, index);
+
+
+                        //替換者位置列表更新
+                        colsSequence[tempOrderChange] = index;
+
+                        //被替換者位置列表更新
+                        colsSequence[tempOrder] = changedIndex;
+
+                        //計數
+                        moveCountOutput();
+                        
+                        //檢查完成
+                        checkSort();
+
+                    }
+                    mouseExit(element, index)
+                })
+                //拉太快也回去
+                element.addEventListener("mouseleave", () => {
+                    mouseExit(element, index)
+                })
+                // console.log();
+            });
         })
 
 
-        //設置監聽器、記錄原始位置
-        cols.forEach((element, index) => {
 
 
-            // parseInt(getStyle(element, "left"))
-            // parseInt(getStyle(element, "top"))
-
-            // colsOffset[index] = { "X": element.offsetLeft, "Y": element.offsetTop };
-
-            colsPositions[index] = { "X": parseInt(getStyle(element, "left")), "Y": parseInt(getStyle(element, "top")) };
-
-            //按下滑鼠
-            element.addEventListener("mousedown", (evt) => {
-                mouseStatus[index] = true;
-                //紀錄點下的位置
-                mouseDownPosition.X = evt.clientX;
-                mouseDownPosition.Y = evt.clientY;
-                //選擇原始位置
-                dragNowPosition.X = colsPositions[index].X
-                dragNowPosition.Y = colsPositions[index].Y
-                //設定Z座標浮起來
-                element.style.zIndex = 10;
-                // console.log(index);
-                //原始位置(方格座標)
-                colsChooseNow.X = Math.floor(element.offsetLeft / colsWidth);
-                colsChooseNow.Y = Math.floor(element.offsetTop / colsHeight);
-                // console.log(colsChooseNow.X , colsChooseNow.Y);
-            })
-            //移動滑鼠
-            element.addEventListener("mousemove", (e) => {
-
-                if (mouseStatus[index]) {
-                    // console.log(1);
-                    //現在滑鼠的位置
-                    let mousePositionNowX = e.clientX;
-                    let mousePositionNowY = e.clientY;
-
-                    //與按下位置的移動距離
-                    let movedX = mouseDownPosition.X - mousePositionNowX;
-                    let movedY = mouseDownPosition.Y - mousePositionNowY;
-                    // console.log("與按下位置的移動距離",movedY);
-                    // console.log(colsPositions[index].Y);
-
-                    //新位置
-                    let newX = colsPositions[index].X - movedX;
-                    let newY = colsPositions[index].Y - movedY;
-
-                    //設定位置(只有拖動相對位置)
-                    e.currentTarget.style.top = `${newY}px`;
-                    e.currentTarget.style.left = `${newX}px`;
-
-                }
-
-            })
-            //放開滑鼠  包括離開元素(拖太快)
-            element.addEventListener("mouseup", () => {
-
-                // console.log("※※※※※※※※※※※");
-                //讀取現在的位置和序數
-                let chooseIndex = colsIndexs[index];
-                // console.log("更換前序數", chooseIndex);
-                //原本的位置
-                let nowX = parseInt(chooseIndex % (totalCols));
-                let nowY = parseInt(chooseIndex / (totalCols));
-                // console.log("原本在第幾行(X2)", nowX);
-                // console.log("原本在第幾列(Y2)", nowY);
-
-                //現在拖到的位置(格線位置)
-                let X2 = Math.floor((element.offsetLeft + colsWidth / 2) / colsWidth);
-                let Y2 = Math.floor((element.offsetTop + colsHeight / 2) / colsHeight);
-                // console.log("現在拖到第幾行(X2)", X2);
-                // console.log("現在拖到第幾列(Y2)", Y2);
-
-                //新位置轉換回序數
-                let newSequence = Y2 * totalCols + X2;
-                // console.log("新序數:",newSequence);
-
-                //相同判斷
-                let sameJudge = true;
-                if (X2 == colsChooseNow.X && Y2 == colsChooseNow.Y) {
-                    sameJudge = false;
-                    // console.log("相同");
-                }
-
-                //合併判斷
-                //(不是同一個)
-                //(sameJudge)
-                //(X軸在行數範圍內)
-                //(X2 >= 0 && X2 < totalCols)
-                //(Y軸在列數範圍內)
-                //(Y2 >= 0 && Y2 < totalRows)
-                //(新序數不超過原本總數，避免沒完全填滿的空白)
-                //(newSequence < colsAmount)
-                // console.log("※※※※※※※※※※※※※※※※");
-                // console.log("不是同一個",sameJudge);
-                // console.log("X軸在行數範圍內",X2 >= 0 && X2 < totalCols);
-                // console.log("Y軸在列數範圍內", Y2 >= 0 && Y2 < totalRows);
-                // console.log(totalRows);
-                // console.log("新序數不超過原本總數，避免沒完全填滿的空白",newSequence < colsAmount);
-                if (sameJudge && X2 >= 0 && X2 < totalCols && Y2 >= 0 && Y2 < totalRows && newSequence < colsAmount) {
-                    // console.log("變換");
-
-                    //暫存序數 (替換者原本的位置)
-                    let tempOrder = chooseIndex;
-
-                    //設定新序數 (被替換者原本的位置)
-                    let tempOrderChange = newSequence;
-
-                    //替換者設定新Flex序數
-                    element.style.order = newSequence;
-
-                    //替換者序數列表替換
-                    colsIndexs[index] = tempOrderChange;
-
-                    //被替換者的INDEX
-                    let changedIndex = colsSequence[tempOrderChange];
-
-                    //被替換者設定新Flex序數
-                    cols[changedIndex].style.order = tempOrder;
-
-                    //被替換者序數列表替換
-                    colsIndexs[changedIndex] = tempOrder;
-
-                    // mouseExit(element, index);
 
 
-                    //替換者位置列表更新
-                    colsSequence[tempOrderChange] = index;
-
-                    //被替換者位置列表更新
-                    colsSequence[tempOrder] = changedIndex;
-
-                }
-                mouseExit(element, index)
-            })
-            //拉太快也回去
-            element.addEventListener("mouseleave", () => {
-                mouseExit(element, index)
-            })
 
 
-            // console.log();
-        });
         //
         window.addEventListener("mouseup", () => {
             mouseStatus.forEach((value) => {
                 value = false;
             })
         })
+
+        //計數
+        function moveCountOutput() {
+            moveCount++;
+            moveCountP.innerText = "計數:" + moveCount;
+        }
+
+        //檢查排序
+        function checkSort() {
+            // checkArr colsIndexs
+            let checkStatus = true
+            checkArr.forEach((element, index, array) => {
+                if (array[index] !== colsIndexs[index]) {
+                    checkStatus = false;
+                    return;
+                }
+            });
+            if (checkStatus) {
+                cols.forEach((element, index) => {
+                    element.style.pointerEvents = "none";
+                })
+                moveCountP.innerText = "完成";
+                setTimeout(() => {
+                    alert("完成!!");
+                }, 100)
+
+                // console.log("OK");
+            }
+
+        }
 
         //取消拖移
         function mouseExit(element, index) {
