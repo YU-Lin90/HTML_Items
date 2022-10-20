@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./CssTemplate.css">
+    <style>
+        .viewer {
+            position: relative;
+            top: 300px;
+            left: 30%;
+            orientation: 800px;
+            width: 500px;
+            height: 500px;
+        }
+
+        .rotater {
+            /* width: 100%;
+            height: 100%; */
+            transform-style: preserve-3d;
+            position: relative;
+            transform: rotateX(95deg) rotateZ(-45deg) rotateY(30deg);
+            animation: adrotate 3s linear infinite;
+            transform-origin: 50% 50%;
+        }
+
+        .faces {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            border: 2px #99c solid;
+            /* width: 200px; */
+            /* height: 200px; */
+            background-color: #ccf;
+            /* backface-visibility: hidden; */
+            text-align: center;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .surface {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            border: 1px #99c solid;
+            width: 480px;
+            height: 480px;
+            background-color: #ccf;
+            /* backface-visibility: hidden; */
+            text-align: center;
+            position: absolute;
+
+            clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+        }
+
+        .surface1 {
+            transform: rotateX(90deg) translateZ(100px);
+        }
+
+        .surface2 {
+            transform: rotateX(90deg) translateZ(-100px);
+        }
+
+        @keyframes adrotate {
+            from {
+                transform: rotateX(95deg) rotateZ(-45deg) rotateY(0deg);
+            }
+
+            to {
+                transform: rotateX(95deg) rotateZ(-45deg) rotateY(-360deg);
+            }
+        }
+
+        .dekuchi {
+            height: 20px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background-color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="viewer">
+        <div class="rotater">
+            <!-- <div class="faces face01"></div>
+            <div class="faces face02"></div>
+            <div class="faces face03"></div>
+            <div class="faces face04"></div>
+            <div class="faces face05">
+                <div class="dekuchi"></div>
+            </div>
+            <div class="faces face06"></div>
+            <div class="faces face07"></div>
+            <div class="faces face08"></div> -->
+            <!-- <div class="surface surface1"></div> -->
+            <!-- <div class="surface surface2"></div> -->
+        </div>
+    </div>
+    <button class="btnStop">123</button>
+
+    <script>
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //設定角數
+        const amount = 6  ||4;
+
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //※※※※※※※※※※※※※
+        //邊長轉成大圓半徑  固定邊長
+        //設定邊長
+        // const size = 100;
+        // //設定大園半徑
+        // const radius = size / 2 / Math.tan(Math.PI / amount);
+        //※※※※※※※※※※※※※
+
+        //兩種選一種用
+
+        //※※※※※※※※※※※※※
+        //大園半徑轉成邊長  固定半徑
+        //設定大園半徑
+        const radius = 200;
+        //// 設定邊長
+        const size = 2 * radius  * Math.tan(Math.PI / amount);
+        //※※※※※※※※※※※※※
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+
+
+
+        //父元素
+        const rotater = document.querySelector(".rotater");
+        //每次要轉幾度
+        const rads = 360 / amount;
+        //產生圖形
+        for (let i = 0; i < amount; i++) {
+            createToAppendChild(rotater, "div", "faces", null)
+        }
+        //選取全部小孩
+        const faces = document.querySelectorAll(".faces");
+        //設定屬性
+        faces.forEach((element, index) => {
+            //設定寬高
+            element.style.width = `${size}px`;
+            element.style.height = `${size}px`;
+            //設定旋轉角度及移動距離
+            element.style.transform = `rotateY(${index * rads}deg) translateZ(${radius}px)`
+        });
+        //按鈕
+        const btnStop = document.querySelector(".btnStop");
+        //按鈕事件
+        btnStop.addEventListener("click", () => {
+            rotater.style.animation = "none";
+        })
+        //產生節點     (父層,Tag名,Class全部,文字內容)  後兩項如不用則輸入null
+        function createToAppendChild(parentNodeAppend, tagName, classListAll, setInnerText) {
+            let newNode = document.createElement(tagName);
+            if (classListAll) {
+                newNode.classList.add(classListAll);
+            }
+            if (setInnerText) {
+                let textNode = document.createTextNode(setInnerText);
+                newNode.appendChild(textNode);
+            }
+            parentNodeAppend.appendChild(newNode);
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>

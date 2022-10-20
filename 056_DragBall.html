@@ -132,6 +132,8 @@
         //拖曳大球
         let dragBall = qs(".rotateBox");
 
+        let viewerBox = qs(".viewerBox");
+
         //大球寬
         let ballWidth = parseInt(getStyle(dragBall, "width"));
         //大球高
@@ -152,7 +154,7 @@
 
 
         //按下設定狀態
-        dragBall.addEventListener("mousedown", (evt) => {
+        viewerBox.addEventListener("mousedown", (evt) => {
             mouseEvent.xDown = evt.clientX;
             mouseEvent.yDown = evt.clientY;
             mouseEvent.dragStatus = true;
@@ -162,7 +164,7 @@
             // console.log(checkStyle1);
             // console.log(checkStyle2);
             // console.log($(".rotateBox").css("transform"));
-            dragBall.style.cursor = "grabbing";
+            viewerBox.style.cursor = "grabbing";
         })
         //放開設定狀態
         window.addEventListener("mouseup", (evt) => {
@@ -176,7 +178,7 @@
             let moveRatioV = yDistance / ballHeight;
             rotateVNow = rotateVNow + moveRatioV * -90;
             rotateHNow = rotateHNow + moveRatioH * 90;
-            dragBall.style.cursor = "grab";
+            viewerBox.style.cursor = "grab";
             // console.log(mouseEvent);
         })
         //離開設定狀態
@@ -193,7 +195,7 @@
         //     rotateHNow = rotateHNow + moveRatioH * 90;
         // })
         //滑鼠移動
-        dragBall.addEventListener("mousemove", (evt) => {
+        viewerBox.addEventListener("mousemove", (evt) => {
 
             if (mouseEvent.dragStatus) {
                 let mouseNowX = evt.clientX;

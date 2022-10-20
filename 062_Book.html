@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./CssTemplate.css">
+    <style>
+        .book {
+            display: flex;
+            width: 80%;
+
+        }
+
+        .pages {
+            width: 50%;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            outline: 1px red solid;
+            line-height: 0;
+        }
+
+        .pages>img {
+            width: 200%;
+            flex-grow: 0;
+            flex-shrink: 1;
+            /* height: 100%; */
+            /* object-fit: contain; */
+        }
+        .leftPage {
+            position: relative;
+            object-position: left;
+            /* left: 0; */
+        }
+
+        .rightPage {
+            position: relative;
+            /* right: 0; */
+            object-position: right;
+        }
+
+        .leftPage>img {
+            justify-content: flex-start;
+        }
+        .rightPage>img{
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="book">
+        <div class="leftPage pages">
+            <img src="./images/vs04.jpg" alt="">
+        </div>
+        <div class="rightPage pages">
+            <img src="./images/vs04.jpg" alt="">
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+
+
+
+    </script>
+
+</body>
+
+</html>
