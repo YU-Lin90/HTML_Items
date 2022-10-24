@@ -56,54 +56,7 @@
     </div>
 
     <div class="outterFrame">
-        <!-- <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_01.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_02.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_03.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_04.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_05.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_06.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_07.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_08.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_09.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_10.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_11.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_12.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_13.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_14.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_15.jpg" alt="" draggable="false"></div>
-        </div>
-        <div class="cols" draggable="false">
-            <div class="imgFR"><img src="./PuzzlePart/Original_16.jpg" alt="" draggable="false"></div>
-        </div> -->
+
 
     </div>
     <div class="disf jc-c ai-c">
@@ -138,7 +91,7 @@
         let colsSequence = [];
 
         //展示框
-        let photoFrame = qs(".outterFrame");
+        let photoFrame = document.querySelector(".outterFrame");
 
         //展示框位置
         let framePosition = { "X": photoFrame.offsetLeft, "Y": photoFrame.offsetTop };
@@ -197,7 +150,7 @@
         let dragNowPosition = { "X": 0, "Y": 0 };
 
         //選全部圖框
-        let cols = qsA(".cols");
+        let cols= document.querySelectorAll(".cols");
         // console.log(cols);
 
         //小框總數
@@ -205,13 +158,13 @@
         // console.log(colsAmount);
 
         //開始按鈕
-        let startButton = qs("#startButton");
+        let startButton = document.querySelector("#startButton");
 
         //移動次數
         let moveCount = 0
 
         //計數框
-        let moveCountP = qs(".moveCountP");
+        let moveCountP = document.querySelector(".moveCountP");
 
         //亂數排序用
         let totalArr = [];

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>064_BubbleSaveData</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        .body {
+            /* position: relative; */
+        }
+
+        .circle {
+            border-radius: 50%;
+            position: absolute;
+            translate: -50% -50%;
+            pointer-events: none;
+        }
+        .drawPlate{
+            position: relative;
+            background-color: #ccc;
+            width: 800px;
+            height: 800px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="drawPlate">
+
+    </div>
+
+
+
+    <script>
+        let data = [];
+        let win = document.querySelector(".drawPlate")
+
+        function getInt(x) {
+            return Math.floor(Math.random() * x);
+        }
+        let CP = false;
+        win.addEventListener("mousedown", () => {
+            CP = true;
+        })
+
+        win.addEventListener("mousemove", (evt) => {
+            if (CP) {
+                let L = getInt(50);
+                let CIRC = document.createElement("div");
+                CIRC.classList.add("circle", "autobg");
+                CIRC.style.width = `${L}px`;
+                CIRC.style.height = `${L}px`;
+                CIRC.style.left = `${evt.offsetX}px`;
+                CIRC.style.top = `${evt.offsetY}px`;
+                let bgc = getRBGA();
+                CIRC.style.backgroundImage = bgc;
+                data.push({ "left": evt.offsetX, "top": evt.offsetY, "size": L, "bgc": bgc });
+                win.appendChild(CIRC);
+            }
+        })
+        document.addEventListener("mouseup", () => {
+            CP = false;
+            console.log(data);
+        })
+        let CIRC = document.createElement("div");
+        CIRC.classList.add("ball");
+
+
+        function getData() {
+            const ta = document.querySelector('#ta');
+            ta.value = JSON.stringify(data, null, 4);
+            localStorage.setItem('myDivDraw', JSON.stringify(data))
+        }
+
+
+
+
+    </script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script>
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 50) + 100);
+        }
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+        }
+
+        const elements = document.querySelectorAll('.autobg');
+
+        Array.from(elements).forEach((element, index) => {
+            element.style.backgroundImage = getRBGA();
+        });
+
+           // $('.autobg').each(function (index, currentElement) {
+           //     currentElement.style.backgroundImage = getRBGA();
+           // });
+    </script>
+</body>
+
+</html>

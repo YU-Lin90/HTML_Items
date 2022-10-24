@@ -93,18 +93,8 @@
 
     <div class="viewer">
         <div class="rotater">
-            <!-- <div class="faces face01"></div>
-            <div class="faces face02"></div>
-            <div class="faces face03"></div>
-            <div class="faces face04"></div>
-            <div class="faces face05">
-                <div class="dekuchi"></div>
-            </div>
-            <div class="faces face06"></div>
-            <div class="faces face07"></div>
-            <div class="faces face08"></div> -->
-            <!-- <div class="surface surface1"></div> -->
-            <!-- <div class="surface surface2"></div> -->
+            <!-- <div class="surface surface1"></div>
+            <div class="surface surface2"></div> -->
         </div>
     </div>
     <button class="btnStop">123</button>
@@ -112,7 +102,7 @@
     <script>
         //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
         //設定角數
-        const amount = 6  ||4;
+        const amount =  8 ||4;
 
         //※※※※※※※※※※※※※※※※※※※※※※※※※※
         //※※※※※※※※※※※※※
@@ -129,14 +119,19 @@
         //大園半徑轉成邊長  固定半徑
         //設定大園半徑
         const radius = 200;
-        //// 設定邊長
+        // 設定邊長
         const size = 2 * radius  * Math.tan(Math.PI / amount);
         //※※※※※※※※※※※※※
         //※※※※※※※※※※※※※※※※※※※※※※※※※※
         //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
 
 
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //外接圓半徑
+        // RADIUS = size/2   * csc(pi/n) = size/2 / sin(pi/n)
+        // size = 2 * RADIUS *sin (pi/n) ;
 
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※
 
         //父元素
         const rotater = document.querySelector(".rotater");

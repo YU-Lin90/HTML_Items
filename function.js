@@ -266,3 +266,16 @@ function qsA(queryTarget) {
 function getStyle(DOM, style) {
     return window.getComputedStyle(DOM).getPropertyValue(style);
 }
+
+//產生節點 (Tag名,文字內容,Class全部,屬性,父層) 沒有傳父層NODE 則直接回傳節點 屬性需包成物件
+//ex:  const div01 = createNode("div","123","box01") ;
+//     createNode("div","456","box02",div01) ;
+//這樣會產生一個div.box01  裡面有文字123 和一個div.box02 裡面有文字456 
+function createNode(tagName, setInnerText, classListAll, attributes, parentNodeAppend) {
+    const newNode = document.createElement(tagName);
+    if (setInnerText) { newNode.appendChild(document.createTextNode(setInnerText)) };
+    if (classListAll) { newNode.classList.add(classListAll); };
+    if (attributes) { for (let key in attributes) { newNode.setAttribute(key, attributes[key]) } };
+    if (parentNodeAppend) { parentNodeAppend.appendChild(newNode); return; }
+    else { return newNode; };
+}

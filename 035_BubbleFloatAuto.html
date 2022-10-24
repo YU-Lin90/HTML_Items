@@ -24,9 +24,10 @@
             width: 100%;
             height: 100vh;
             /* background-color: #ccc; */
-            overflow: hidden;            
+            overflow: hidden;
         }
-        img{
+
+        img {
             width: 100%;
             /* cursor: pointer; */
         }
@@ -59,7 +60,7 @@
 
 
         (function myLoop2(i) {
-            setTimeout(function () { 
+            setTimeout(function () {
                 let windowW = window.getComputedStyle(win, '').getPropertyValue('width');
                 let areaW = windowW.substring(0, windowW.length - 2)
                 let w = getIntRange(30, areaW)
@@ -75,7 +76,7 @@
                 let PN = getIntTo1(4);
 
                 let pImg = document.createElement("img");
-                pImg.setAttribute("src",`./images/${PN}.png`);
+                pImg.setAttribute("src", `./images/${PN}.png`);
                 CIRC.appendChild(pImg);
 
                 win.appendChild(CIRC);
@@ -83,7 +84,7 @@
                 let windowH = window.getComputedStyle(win, '').getPropertyValue('height');
                 let areaH = windowH.substring(0, windowH.length - 2)
                 setTimeout(function () {
-                    CIRC.style.transform = `translateY(-${areaH*1.5}px)`;        
+                    CIRC.style.transform = `translateY(-${areaH * 1.5}px)`;
 
                     (function myLoop(i) {
                         setTimeout(function () {
@@ -96,7 +97,7 @@
                         win.removeChild(win.firstChild)
                     }, 10000)
                 }, 500)
-                
+
                 if (i++) myLoop2(i);   //  decrement i and call myLoop again if i > 0
             }, 50)//調這裡影響數量
         })(10);
