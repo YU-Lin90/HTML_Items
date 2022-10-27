@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>065_Gacha</title>
+    <link rel="stylesheet" href="./reset.css" />
+    <link rel="stylesheet" href="./CssTemplate.css" />
+    <style>
+      .viewer {
+        position: relative;
+        top: 300px;
+        left: 300px;
+        orientation: 800px;
+        width: 500px;
+        height: 500px;
+        background-color: #ccc;
+      }
+
+      .rotater {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        position: relative;
+        transform: rotateY(-60deg) rotateX(0deg);
+        /* animation: polygonRotate 3s linear infinite; */
+        transform-origin: 50% 50%;
+      }
+      @keyframes polygonRotate {
+        from {
+          transform: rotateY(-60deg) rotateX(0deg);
+        }
+
+        to {
+          transform: rotateY(-60deg) rotateX(-360deg);
+        }
+      }
+      .rotater > div {
+        background-image: url(./images/wood.jpg);
+      }
+      .faces {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        /* border: 2px #99c solid; */
+        /* width: 200px; */
+        /* height: 200px; */
+        background-color: #ccf;
+        /* backface-visibility: hidden; */
+        text-align: center;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .surface {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        /* border: 1px #99c solid; */
+        width: 400px;
+        height: 400px;
+        background-color: #ccf;
+        /* backface-visibility: hidden; */
+        text-align: center;
+        position: absolute;
+        clip-path: polygon(
+          30% 0,
+          70% 0,
+          100% 30%,
+          100% 70%,
+          70% 100%,
+          30% 100%,
+          0 70%,
+          0 30%
+        );
+      }
+      .dekuchi {
+        height: 20px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: #333;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="viewer">
+      <div class="rotater">
+        <div class="surface surface1"></div>
+        <div class="surface surface2"></div>
+      </div>
+    </div>
+    <button class="btnStop"></button>
+
+    <script>
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+      //設定角數
+      const amount = 8 || 4;
+
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※
+      //※※※※※※※※※※※※※
+      //邊長轉成大圓半徑  固定邊長
+      //設定邊長
+      // const size = 100;
+      // //設定大園半徑
+      // const radius = size / 2 / Math.tan(Math.PI / amount);
+      //※※※※※※※※※※※※※
+
+      //兩種選一種用
+
+      //※※※※※※※※※※※※※
+      //大園半徑轉成邊長  固定半徑
+      //設定大園半徑
+      const radius = 200;
+      // 設定邊長
+      const size = 2 * radius * Math.tan(Math.PI / amount);
+      //※※※※※※※※※※※※※
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+      const surface1 = document.querySelector(".surface1");
+      surface1.style.transform = `rotateY(90deg)  translateZ(${
+        size / 2 + 2
+      }px)`;
+      const surface2 = document.querySelector(".surface2");
+      surface2.style.transform = `rotateY(90deg)  translateZ(${
+        -size / 2 - 2
+      }px)`;
+
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※
+      //外接圓半徑
+      // RADIUS = size/2   * csc(pi/n) = size/2 / sin(pi/n)
+      // size = 2 * RADIUS *sin (pi/n) ;
+
+      //※※※※※※※※※※※※※※※※※※※※※※※※※※
+
+      //父元素
+      const rotater = document.querySelector(".rotater");
+      //每次要轉幾度
+      const rads = 360 / amount;
+      //產生圖形
+      for (let i = 0; i < amount; i++) {
+        createToAppendChild(rotater, "div", "faces", null);
+      }
+      //選取全部小孩
+      const faces = document.querySelectorAll(".faces");
+      //設定屬性
+      faces.forEach((element, index) => {
+        //設定寬高
+        element.style.width = `${size}px`;
+        element.style.height = `${size}px`;
+        //設定旋轉角度及移動距離
+        element.style.transform = `rotateX(${
+          index * rads
+        }deg) translateZ(${radius}px)`;
+      });
+      //按鈕
+      const btnStop = document.querySelector(".btnStop");
+      //按鈕事件
+      btnStop.addEventListener("click", () => {
+        rotater.style.animation = "none";
+      });
+      //產生節點     (父層,Tag名,Class全部,文字內容)  後兩項如不用則輸入null
+      function createToAppendChild(
+        parentNodeAppend,
+        tagName,
+        classListAll,
+        setInnerText
+      ) {
+        let newNode = document.createElement(tagName);
+        if (classListAll) {
+          newNode.classList.add(classListAll);
+        }
+        if (setInnerText) {
+          let textNode = document.createTextNode(setInnerText);
+          newNode.appendChild(textNode);
+        }
+        parentNodeAppend.appendChild(newNode);
+      }
+
+      //區域寬
+      let ballWidth = 400;
+      //區域高
+      let ballHeight = 400;
+      //現在轉到哪
+      let rotateVNow = 0;
+      let rotateHNow = 0;
+
+      //儲存滑鼠座標物件
+      let dragStatus = false;
+      const viewer = document.querySelector(".viewer");
+      viewer.addEventListener("mousedown", (evt) => {
+        dragStatus = true;
+      });
+
+      //放開設定狀態
+      window.addEventListener("mouseup", (evt) => {
+        dragStatus = false;
+      });
+      viewer.addEventListener("mousemove", (evt) => {
+        if (dragStatus) {
+          let mouseNowX = evt.clientX;
+          let mouseNowY = evt.clientY;
+          let dx = mouseNowX - 550;
+          let dy = mouseNowY - 550;
+          // console.log({ mouseNowX });
+          // console.log({ mouseNowY });
+          // console.log(viewer.offsetLeft);
+          // console.log(viewer.offsetTop);
+          // console.log({ dx });
+          // console.log({ dy });
+          //  (x,y)
+          // A + -   B - -  C - +  D + +
+          let degs = 0;
+          if (dx < 0 && dy < 0) {
+            degs = -180;
+          } else if (dx < 0 && dy > 0) {
+            degs = -180;
+          }
+          degs += (Math.atan(dy / dx) / Math.PI) * 180;
+          rotater.style.transform = `rotateY(-60deg) rotateX(${degs}deg)`;
+        }
+      });
+    </script>
+  </body>
+</html>
