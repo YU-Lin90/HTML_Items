@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自製元件</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="CssTemplate.css">
+    <link rel="shortcut icon" href="./images/icon02.png">
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 60px;
+            border-bottom: 6px double #ccf;
+            margin-bottom: 10px;
+            line-height: 80px;
+            color: #33f;
+        }
+
+        h2 {
+            font-size: 48px;
+            border-bottom: 6px double #fcc;
+            margin-bottom: 10px;
+            line-height: 60px;
+            color: #f33;
+        }
+
+        .content {
+            width: 80%;
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .cols {
+            width: 50%;
+            padding: 5px;
+            aspect-ratio: 3/1;
+        }
+
+        @media screen and (min-width:800px) {
+            .cols {
+                width: 25%;
+                padding: 5px;
+            }
+        }
+
+        .cardFrame {
+            width: 100%;
+            height: 100%;
+        }
+
+        .gDriveLink {
+            font-size: 28px;
+            border-bottom: 6px double #cfc;
+            line-height: 40px;
+            color: #3f3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="disf ai-c jc-c w100p fd-c">
+
+        <h1>元件、簡易作品集</h1>
+        <h3 class="gDriveLink"><a
+                href="https://drive.google.com/drive/folders/1JA0RSmzZHISf7irqNVMwbckszcZtJuEf?usp=sharing">GoogleDrive連結</a>
+        </h3>
+
+        <h2>遊戲</h2>
+        <section class="content games">
+        </section>
+
+        <h2>元件</h2>
+        <section class="content component">
+        </section>
+
+        <h2>常用連結</h2>
+        <section class="content jc-c">
+            <div class="cols">
+                <a href="../書籤連結.html">
+                    <div class="cardFrame autobg disf jc-se ai-c fd-c">
+                        <h3>書籤連結</h3>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <div class="marb100"></div>
+
+    </div>
+
+    <script>
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //遊戲連結
+        const games = document.querySelector(".games");
+        const gameLinks = [
+            ["./00A_BubbleGame.html", "消泡泡", "00A_BubbleGame"],
+            ["./00B_TurncardGame.html", "翻牌", "00B_TurncardGame"],
+            ["./00C_GreedSnake.html", "貪食蛇", "00C_GreedSnake"],
+            ["./00D_RhythmGame.html", "節奏", "00D_RhythmGame"],
+            ["./00E_PuzzleGame.html", "拼圖", "00E_PuzzleGame"]
+        ]
+        setFrags(games, gameLinks);
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        //元件連結
+        const component = document.querySelector(".component");
+        const links = [
+            ["./002_Turn_AD.html", "立體旋轉廣告", "002_Turn_AD"],
+            ["./008_MenuClose.html", "目錄關閉按鈕切換", "008_MenuClose"],
+            ["./009_Hexgon.html", "六角形卡片", "009_Hexgon"],
+            ["./010_Circle_PhotoFrame.html", "圓形相框", "010_Circle_PhotoFrame"],
+            ["./011_Text_Button_Botline.html", "文字滑過底線", "011_Text_Button_Botline"],
+            ["./012_FormChange.html", "圖形變形", "012_FormChange"],
+            ["./013_FlipTime.html", "時刻表翻動效果", "013_FlipTime"],
+            ["./014_SideMenu.html", "側邊收起目錄", "014_SideMenu"],
+            ["./015_ParralCard.html", "按鈕卡片切換", "015_ParralCard"],
+            ["./018_Jumbotron.html", "自動輪播廣告牆", "018_Jumbotron"],
+            ["./025_SepreadBall.html", "圓形散發圓點", "025_SepreadBall"],
+            ["./026_Clock.html", "時鐘", "026_Clock"],
+            ["./027_Bubble.html", "畫板_泡泡固定", "027_Bubble"],
+            ["./029_Turn_ADSpeed.html", "廣告輪播_斜向特寫", "029_Turn_ADSpeed"],
+            ["./030_SleepBubble.html", "睡眠泡泡動畫", "030_SleepBubble"],
+            ["./031_RandomBubble.html", "全畫面隨機泡泡", "031_RandomBubble"],
+            ["./032_DrawBubbleFall.html", "畫板_泡泡墜落", "032_DrawBubbleFall"],
+            ["./033_DrawBubbleFloat.html", "畫板_泡泡飄起", "033_DrawBubbleFloat"],
+            ["./035_BubbleFloatAuto.html", "全畫面泡泡飄起", "035_BubbleFloatAuto"],
+            ["./036_ColorPlate.html", "二維色板", "036_ColorPlate"],
+            ["./041_SepreadBallInfinite.html", "無限圓形散發圓點", "041_SepreadBallInfinite"],
+            ["./043_Roulette.html", "輪盤", "043_Roulette"],
+            ["./044_HexagonAnimate.html", "六角形卡片_淡入", "044_HexagonAnimate"],
+            ["./045_RotateBall.html", "旋轉3D球", "045_RotateBall"],
+            ["./047_RhythmGameMonoKey.html", "單鍵節奏遊戲原型", "047_RhythmGameMonoKey"],
+            ["./050_VsShow.html", "廣告展示_斜切", "050_VsShow"],
+            ["./051_VsShow2.html", "廣告展示_斜切_側入", "051_VsShow2"],
+            ["./052_Helix.html", "螺旋廣告展示", "052_Helix"],
+            ["./053_InfiniteJumbotron.html", "按鍵式無限輪播牆", "053_InfiniteJumbotron"],
+            ["./054_OpenDoor.html", "開門效果", "054_OpenDoor"],
+            ["./055_RotateBallConst.html", "固定位置旋轉3D球", "055_RotateBallConst"],
+            ["./056_DragBall.html", "拖曳3D球", "056_DragBall"],
+            ["./057_ImgDrag.html", "重疊圖片拖曳", "057_ImgDrag"],
+            ["./058_ImgDrag2.html", "有序圖片拖曳", "058_ImgDrag2"],
+            ["./059_ImgSort1Axis.html", "Flex圖片拖曳互換-單軸", "059_ImgSort1Axis"],
+            ["./060_ImgExchange2Axis.html", "Flex圖片拖曳互換-雙軸", "060_ImgExchange2Axis"],
+            ["./061_ImgExchangeFixRange.html", "圖片拖曳-修正判斷區", "061_ImgExchangeFixRange"],
+            ["./063_Octagon.html", "立體正多邊形", "063_Octagon"],
+            ["./065_Gacha.html", "八角形立體拖曳旋轉", "065_Gacha"]
+        ]
+        setFrags(component, links);
+        //※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※※
+        function createBlockToFrag(nameh3, namep, link, frag) {
+            const h3Node = document.createElement("h3");
+            h3Node.appendChild(document.createTextNode(nameh3));
+            const pNode = document.createElement("h3");
+            pNode.appendChild(document.createTextNode(namep));
+            const divNode = document.createElement("div");
+            divNode.classList.add("cardFrame", "disf", "jc-se", "ai-c", "fd-c")
+            divNode.style.backgroundImage = `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+            divNode.appendChild(h3Node);
+            divNode.appendChild(pNode);
+            const aNode = document.createElement("a");
+            aNode.setAttribute("href", link);
+            aNode.appendChild(divNode);
+            const colsNode = document.createElement("div");
+            colsNode.classList.add("cols");
+            colsNode.appendChild(aNode);
+            frag.appendChild(colsNode);
+        }
+        function setFrags(frame, list) {
+            let docFrag = document.createDocumentFragment();
+            list.forEach((el) => {
+                createBlockToFrag(el[1], el[2], el[0], docFrag)
+            })
+            frame.appendChild(docFrag);
+        }
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * Math.floor(max - 50) + 100);
+        }
+
+
+        function getRBGA() {
+            return `linear-gradient(135deg, rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.5), rgba(${getRandomInt(256)},${getRandomInt(256)},${getRandomInt(256)},.8)`
+        }
+        Array.from(document.querySelectorAll('.autobg')).forEach((element) => {
+            element.style.backgroundImage = getRBGA();
+        });
+    </script>
+</body>
+
+</html>
